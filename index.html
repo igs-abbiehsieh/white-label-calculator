@@ -235,8 +235,8 @@ footer{color:var(--muted);font-size:12px;margin-top:40px}
       <div class="advgrid">
         <div class="field"><label for="psChurn">PS Handle 倍數</label><input type="number" id="psChurn" step="0.1" min="0"></div>
         <div class="field"><label for="awChurn">AW Handle 倍數</label><input type="number" id="awChurn" step="0.1" min="0"></div>
-        <div class="field"><label for="promo">活動費率 %（佔入金）</label><input type="number" id="promo" step="0.1" min="0"></div>
-        <div class="field"><label for="cb">刷退率 %（佔入金）</label><input type="number" id="cb" step="0.1" min="0"></div>
+        <div class="field"><label for="promo">獎金、活動費率 %（佔入金）</label><input type="number" id="promo" step="0.1" min="0"></div>
+        <div class="field"><label for="cb">刷退、詐欺款率 %（佔入金）</label><input type="number" id="cb" step="0.1" min="0"></div>
         <div class="field"><label for="proc">金流費率 %（佔入金）</label><input type="number" id="proc" step="0.01" min="0"></div>
         <div class="field"><label for="gpRate">AW 遊戲商費率 %</label><input type="number" id="gpRate" step="0.1" min="0"></div>
         <div class="field"><label for="kyc">KYC 月費</label><input type="number" id="kyc" step="1000" min="0"></div>
@@ -276,19 +276,19 @@ footer{color:var(--muted);font-size:12px;margin-top:40px}
       <li>COGS ＝ Handle × 9.86%（賽道費 7%、遊戲商 0.6%、Source Market Fee 1.49%、Tote 0.4%、Interface Tote 0.07%、ND 稅 0.25%、慈善 0.05%）</li>
       <li>Gross Profit ＝ GGR − COGS</li>
       <li>TaDa 分成依每月 Gross Profit 所在級距，整筆適用該級比例：$100 萬以下 60%、$100–500 萬 70%、$500–1,000 萬 75%、超過 $1,000 萬 80%</li>
-      <li>淨利 ＝ TaDa 分成 − 廣告、活動、刷退款、金流手續費、年費 $4 萬 ÷ 12、設定費 $10 萬 ÷ 12</li>
+      <li>淨利 ＝ TaDa 分成 − 廣告、獎金、活動費、刷退、詐欺款、金流手續費、年費 $4 萬 ÷ 12、設定費 $10 萬 ÷ 12</li>
     </ol>
     <h3>AW（AmWest，B Pool）</h3>
     <ol>
       <li>Handle ＝ 入金 × Handle 倍數；GGR ＝ Handle × Takeout 7.75%</li>
       <li>COS ＝ Handle × 1.66%（pool guarantees、賽道內容相關費用、監管費與稅、host fees、資料費、tote 等）</li>
-      <li>NGR ＝ GGR − COS − 玩家獎金 − 金流 − 刷退 − KYC − Geolocation</li>
+      <li>NGR ＝ GGR − COS − 獎金、活動費 − 金流手續費 − 刷退、詐欺款 − KYC − Geolocation</li>
       <li>AW 分成 ＝ MAX（NGR × 12%，Handle × 0.5%）；第 2–5 年至少 $62,500</li>
       <li>遊戲商 ＝（GGR − COS）× 遊戲商費率；TaDa 分成 ＝ NGR − AW 分成 − 遊戲商</li>
       <li>淨利 ＝ TaDa 分成 − 廣告 − 設定費 $35 萬 ÷ 12（僅第 1 年）− 自建人力與系統</li>
     </ol>
     <h3>資料來源</h3>
-    <p>PS：Potent Platform Terms（2026/01/01）、Platform Functionality。AW：AmWest B-Pool Economics（AmWager Average）；設定費、合約年限與月費依 AW 來源資料。Handle 倍數、活動、刷退、金流、KYC / Geo 為 TaDa 內部假設。</p>
+    <p>PS：Potent Platform Terms（2026/01/01）、Platform Functionality。AW：AmWest B-Pool Economics（AmWager Average）；設定費、合約年限與月費依 AW 來源資料。Handle 倍數、獎金、活動費、刷退、詐欺款、金流手續費、KYC / Geo 為 TaDa 內部假設。</p>
   </div>
   <footer>TaDa Gaming｜美國市場拓展｜內部資料</footer>
 </article>
@@ -308,7 +308,7 @@ function calc(p){
   else{for(const [cap,r] of tiers){const seg=Math.max(Math.min(pgp,cap)-prev,0); pt+=seg*r; prev=cap;}}
   if(pgp<0) pt=pgp*0.6;
   const pp=pgp-pt;
-  const psOwn=[['廣告費',p.ad],['活動費',D*p.promo],['刷退款',D*p.cb]];
+  const psOwn=[['廣告費',p.ad],['獎金、活動費',D*p.promo],['刷退、詐欺款',D*p.cb]];
   if(p.psProc) psOwn.push(['金流手續費',D*p.proc]);
   if(p.psKyc) psOwn.push(['KYC + Geolocation',p.kyc+p.geo]);
   psOwn.push(['年費（月攤）',p.psWaive?0:40000/12]);
@@ -319,7 +319,7 @@ function calc(p){
   const ah=D*p.awChurn, ag=ah*0.0775;
   const acLines=[['賽道、稅費等 COS',0.0166]].map(([n,r])=>({n,r,v:ah*r}));
   const ac=acLines.reduce((a,b)=>a+b.v,0);
-  const aPre=[['玩家獎金',D*p.promo],['金流手續費',D*p.proc],['刷退、詐欺',D*p.cb],['KYC + Geolocation',p.kyc+p.geo]];
+  const aPre=[['獎金、活動費',D*p.promo],['金流手續費',D*p.proc],['刷退、詐欺款',D*p.cb],['KYC + Geolocation',p.kyc+p.geo]];
   const aPreT=aPre.reduce((a,b)=>a+b[1],0), angr=ag-ac-aPreT;
   const share=Math.max(angr*0.12,ah*0.005);
   const awPay=p.awYear2?Math.max(share,62500):share;
