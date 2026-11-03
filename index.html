@@ -133,6 +133,7 @@ tr.n td{font-weight:900;background:var(--soft)}
 .tables tr.b td{color:transparent}
 td.ind{padding-left:24px}
 .calcnote{font-size:13px;color:var(--muted);margin-top:14px}
+.mut{color:var(--muted);font-size:12px}
 mark.warn{background:transparent;color:var(--emph);font-weight:700}
 
 /* method */
@@ -225,10 +226,10 @@ footer{color:var(--muted);font-size:12px;margin-top:40px}
     <div class="field wide">
       <span class="flab" id="yrlab">AW 合約年度</span>
       <div class="seg" role="group" aria-labelledby="yrlab">
-        <button type="button" id="y1">第 1 年<small>設定費 $35 萬月攤</small></button>
-        <button type="button" id="y2">第 2–5 年<small>月費 $62,500</small></button>
+        <button type="button" id="y1">第 1 年<small>設定費 $35 萬月攤，可抵分潤</small></button>
+        <button type="button" id="y2">第 2–5 年<small>年費 $75 萬月攤，可抵分潤</small></button>
       </div>
-      <small style="display:block;color:var(--muted);font-size:12px;margin-top:4px">第 2–5 年月費 $62,500：AW 分成未達補繳，超過折抵。</small>
+      <small style="display:block;color:var(--muted);font-size:12px;margin-top:4px">設定費、年費都按月攤列成本；AW 分潤先抵這筆，超出的部分才另付（AW term sheet）。</small>
     </div>
     <details class="adv">
       <summary>進階假設</summary>
@@ -261,7 +262,7 @@ footer{color:var(--muted);font-size:12px;margin-top:40px}
     <div class="tw"><table><thead><tr><th class="hps">PS（Potent Systems）</th><th class="hps r">金額 (USD)</th><th class="hps r">Handle %</th></tr></thead><tbody id="psT"></tbody></table></div>
     <div class="tw"><table><thead><tr><th class="haw">AW（AmWest）</th><th class="haw r">金額 (USD)</th><th class="haw r">Handle %</th></tr></thead><tbody id="awT"></tbody></table></div>
   </div>
-  <p class="calcnote"><mark class="warn">AW 尚未計入自建網站與人力成本（可在上方填入）</mark>；第 2–5 年月費 $62,500，分潤未達補繳，超過折抵。</p>
+  <p class="calcnote"><mark class="warn">AW 尚未計入自建網站與人力成本（可在上方填入）</mark>；AW 設定費、年費可用分潤抵扣，To AmWest 只列超出部分。</p>
 </article>
 
 <!-- 4 -->
@@ -283,9 +284,10 @@ footer{color:var(--muted);font-size:12px;margin-top:40px}
       <li>Handle ＝ 入金 × Handle 倍數；GGR ＝ Handle × Takeout 7.75%</li>
       <li>COS ＝ Handle × 1.66%（pool guarantees、賽道內容相關費用、監管費與稅、host fees、資料費、tote 等）</li>
       <li>NGR ＝ GGR − COS − 獎金、活動費 − 金流手續費 − 刷退、詐欺款 − KYC − Geolocation</li>
-      <li>AW 分成 ＝ MAX（NGR × 12%，Handle × 0.5%）；第 2–5 年至少 $62,500</li>
-      <li>遊戲商 ＝（GGR − COS）× 遊戲商費率；TaDa 分成 ＝ NGR − AW 分成 − 遊戲商</li>
-      <li>淨利 ＝ TaDa 分成 − 廣告 − 設定費 $35 萬 ÷ 12（僅第 1 年）− 自建人力與系統</li>
+      <li>AW 分成 ＝ MAX（NGR × 12%，Handle × 0.5%）</li>
+      <li>設定費（月攤）＝ 第 1 年 $35 萬 ÷ 12；年費（月攤）＝ 第 2–5 年 $75 萬 ÷ 12；兩者都可用 AW 分成抵扣，To AmWest ＝ MAX（AW 分成 − 已列年費／設定費，0）</li>
+      <li>遊戲商 ＝（GGR − COS）× 遊戲商費率；TaDa 分成 ＝ NGR − To AmWest − 遊戲商</li>
+      <li>淨利 ＝ TaDa 分成 − 廣告 − 年費／設定費（月攤）− 自建人力與系統</li>
     </ol>
     <h3>資料來源</h3>
     <p>PS：Potent Platform Terms（2026/01/01）、Platform Functionality。AW：AmWest B-Pool Economics（AmWager Average）；設定費、合約年限與月費依 AW 來源資料。Handle 倍數、獎金、活動費、刷退、詐欺款、金流手續費、KYC / Geo 為 TaDa 內部假設。</p>
@@ -308,11 +310,9 @@ function calc(p){
   else{for(const [cap,r] of tiers){const seg=Math.max(Math.min(pgp,cap)-prev,0); pt+=seg*r; prev=cap;}}
   if(pgp<0) pt=pgp*0.6;
   const pp=pgp-pt;
-  const psOwn=[['廣告費',p.ad],['獎金、活動費',D*p.promo],['刷退、詐欺款',D*p.cb]];
+  const psOwn=[['廣告費',p.ad],['年費（月攤）',p.psWaive?0:40000/12],['設定費（月攤）',(p.psSingle?50000:100000)/12],['獎金、活動費',D*p.promo],['刷退、詐欺款',D*p.cb]];
   if(p.psProc) psOwn.push(['金流手續費',D*p.proc]);
   if(p.psKyc) psOwn.push(['KYC + Geolocation',p.kyc+p.geo]);
-  psOwn.push(['年費（月攤）',p.psWaive?0:40000/12]);
-  psOwn.push(['設定費（月攤）',(p.psSingle?50000:100000)/12]);
   const psOwnT=psOwn.reduce((a,b)=>a+b[1],0), pn=pt-psOwnT;
   const psVar=D*(p.promo+p.cb+(p.psProc?p.proc:0))+(p.psKyc?p.kyc+p.geo:0);
   // ---- AW
@@ -322,9 +322,11 @@ function calc(p){
   const aPre=[['獎金、活動費',D*p.promo],['金流手續費',D*p.proc],['刷退、詐欺款',D*p.cb],['KYC + Geolocation',p.kyc+p.geo]];
   const aPreT=aPre.reduce((a,b)=>a+b[1],0), angr=ag-ac-aPreT;
   const share=Math.max(angr*0.12,ah*0.005);
-  const awPay=p.awYear2?Math.max(share,62500):share;
+  // AW term sheet：第 1 年 $35 萬預付、第 2–5 年年費 $75 萬（每月 $62,500），都按月攤列成本；分潤先抵這筆，超出的才另付
+  const awAnnual=p.awYear2?62500:0, awSetup=p.awYear2?0:350000/12;
+  const awPay=Math.max(share-awAnnual-awSetup,0);
   const agp=(ag-ac)*p.gpRate, at=angr-awPay-agp;
-  const awOwn=[['廣告費',p.ad],['設定費（月攤）',p.awYear2?0:350000/12],['自建人力與系統',p.staff]];
+  const awOwn=[['廣告費',p.ad],['年費（月攤）',awAnnual,p.awYear2?null:'第 2 年起'],['設定費（月攤）',awSetup,p.awYear2?'僅第 1 年':null],['自建人力與系統',p.staff]];
   const awOwnT=awOwn.reduce((a,b)=>a+b[1],0), an=at-awOwnT;
   return {D,ps:{h:ph,ggr:pg,cLines:pcLines,c:pc,gp:pgp,tada:pt,partner:pp,own:psOwn,ownT:psOwnT,net:pn,var:psVar},
               aw:{h:ah,ggr:ag,cLines:acLines,c:ac,pre:aPre,preT:aPreT,ngr:angr,share,pay:awPay,gpf:agp,tada:at,own:awOwn,ownT:awOwnT,net:an,var:aPreT}};
@@ -347,7 +349,7 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 function syncInputs(){numIds.forEach(k=>{if(document.activeElement!==$(k)) $(k).value=S[k];}); $('depositR').value=Math.min(Math.max(S.deposit,500000),20000000);
   chkIds.forEach(k=>$(k).checked=!!S[k]); $('y1').setAttribute('aria-pressed',!S.awYear2); $('y2').setAttribute('aria-pressed',!!S.awYear2);
   document.querySelectorAll('#presets button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.v===+S.deposit));}
-function rows(list){return list.map(([lab,v,h,cls])=>cls==='b'?'<tr class="b" aria-hidden="true"><td>&nbsp;</td><td></td><td></td></tr>':`<tr class="${cls||''}"><td class="${cls?'':'ind'}">${lab}</td><td class="r num">${usd(v)}</td><td class="r num">${h==null?'':(typeof h==='object'?'淨利率 '+(h.m*100).toFixed(1)+'%':pct(h))}</td></tr>`).join('');}
+function rows(list){return list.map(([lab,v,h,cls])=>cls==='b'?'<tr class="b" aria-hidden="true"><td>&nbsp;</td><td></td><td></td></tr>':`<tr class="${cls||''}"><td class="${cls?'':'ind'}">${lab}</td><td class="r num">${usd(v)}</td><td class="r num">${h==null?'':typeof h==='string'?`<span class="mut">${h}</span>`:(typeof h==='object'?'淨利率 '+(h.m*100).toFixed(1)+'%':pct(h))}</td></tr>`).join('');}
 function breakeven(key,p){const f=D=>calc(Object.assign({},p,{deposit:D}))[key].net;let lo=1e4,hi=5e8;if(f(lo)>0)return 0;if(f(hi)<0)return null;for(let i=0;i<80;i++){const m=(lo+hi)/2;f(m)>0?hi=m:lo=m;}return hi;}
 function render(){syncInputs();const p=P(),r=calc(p),D=p.deposit||1;
   const set=(id,v)=>{const el=$(id);el.textContent=wan(v);el.className='big num '+(v<0?'loss':'gain');};
@@ -376,9 +378,9 @@ function render(){syncInputs();const p=P(),r=calc(p),D=p.deposit||1;
     [['TakeOut（GGR）',aw.ggr,aw.h?aw.ggr/aw.h:0,'k']],
     [...aw.cLines.map(l=>['－ '+l.n,l.v,l.r]),...aw.pre.map(([n,v])=>['－ '+n,v,null])],
     [['NGR（可分潤）',aw.ngr,aw.h?aw.ngr/aw.h:0,'k']],
-    [[p.awYear2&&aw.pay>aw.share?'→ To AmWest（月費下限 $62,500）':'→ To AmWest（NGR 12%）',aw.pay,aw.h?aw.pay/aw.h:0],[`→ Game Provider（${(p.gpRate*100).toFixed(1)}%）`,aw.gpf,aw.h?aw.gpf/aw.h:0]],
+    [['→ To AmWest（分潤扣除已付）',aw.pay,aw.h?aw.pay/aw.h:0],[`→ Game Provider（${(p.gpRate*100).toFixed(1)}%）`,aw.gpf,aw.h?aw.gpf/aw.h:0]],
     [['→ To TaDa',aw.tada,aw.h?aw.tada/aw.h:0,'t']],
-    aw.own.map(([n,v])=>['－ '+n,v,null]),
+    aw.own.map(([n,v,h])=>['－ '+n,v,h||null]),
     [['淨利',aw.net,{m:aw.net/D},'n']]];
   const psR=[],awR=[];
   psG.forEach((g,i)=>{const n=Math.max(g.length,awG[i].length);psR.push(...pad(g,n));awR.push(...pad(awG[i],n));});
