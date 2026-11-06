@@ -124,7 +124,8 @@ details.adv summary{cursor:pointer;font-weight:700;font-size:14px}
 .loss{color:var(--loss)} .gain{color:var(--gain)}
 .tables{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
 @media (max-width:1150px){.tables{grid-template-columns:1fr}}
-.tables td,.tables th{white-space:nowrap;padding:7px 12px;font-size:13.5px}
+.tables td,.tables th{white-space:nowrap;padding:7px 10px;font-size:13px}
+.tables td:first-child{white-space:normal} /* 欄寬不夠時項目名稱換行，不要把右邊擠出去 */
 td.r,th.r{text-align:right}
 tr.k td{background:var(--soft);font-weight:700}
 tr.t td{background:var(--sand);font-weight:700}
@@ -247,8 +248,10 @@ tr.best td{background:var(--soft);font-weight:700}
     <details class="adv">
       <summary>進階假設</summary>
       <div class="advgrid">
-        <div class="field"><label for="psChurn">PS Handle 倍數</label><input type="number" id="psChurn" step="0.1" min="0"></div>
-        <div class="field"><label for="awChurn">AW Handle 倍數</label><input type="number" id="awChurn" step="0.1" min="0"></div>
+        <div class="field"><label for="psBet">PS Bet 倍數（Churn）</label><input type="number" id="psBet" step="0.1" min="0"></div>
+        <div class="field"><label for="psPool">PS 進彩池比例 %（佔 Bet）</label><input type="number" id="psPool" step="1" min="0" max="100"></div>
+        <div class="field"><label for="awBet">AW Bet 倍數（Churn）</label><input type="number" id="awBet" step="0.1" min="0"></div>
+        <div class="field"><label for="awPool">AW 進彩池比例 %（佔 Bet）</label><input type="number" id="awPool" step="1" min="0" max="100"></div>
         <div class="field"><label for="promo">獎金、活動費率 %（佔入金）</label><input type="number" id="promo" step="0.1" min="0"></div>
         <div class="field"><label for="cb">刷退、詐欺款率 %（佔入金）</label><input type="number" id="cb" step="0.1" min="0"></div>
         <div class="field"><label for="proc">金流費率 %（佔入金）</label><input type="number" id="proc" step="0.01" min="0"></div>
@@ -285,7 +288,8 @@ tr.best td{background:var(--soft);font-weight:700}
   <p class="lede">AmWest 從抽水扣掉賽馬成本得到 GGR，按玩家花在我方遊戲的比例分配成 Allocated GGR，直接乘 7% 給我們，Bonus、金流、KYC 都不扣。營運商若要求合約寫明「Bonus 固定扣 X%」，分潤基底會先變小。下面從入金一路列到我實拿，A、B 兩種寫法並排比較。</p>
   <div class="card inputs">
     <div class="field"><label for="g_dep">月入金（USD）</label><input type="number" id="g_dep" min="0" step="100000"><small>這家營運商每月的玩家入金</small></div>
-    <div class="field"><label for="g_mult">Handle 倍數</label><input type="number" id="g_mult" min="0" step="0.1"><small>入金平均被押幾輪</small></div>
+    <div class="field"><label for="g_bet">Bet 倍數（Churn）</label><input type="number" id="g_bet" min="0" step="0.1"><small>入金平均被押幾輪</small></div>
+    <div class="field"><label for="g_pool">進彩池比例 %</label><input type="number" id="g_pool" min="0" max="100" step="1"><small>Bet 有多少進彩池成為 Handle</small></div>
     <div class="field"><label for="g_share">我的分潤 %</label><input type="number" id="g_share" min="0" step="0.5"><small>Addendum 上的比率</small></div>
     <div class="field"><label for="g_alloc">歸屬到我方遊戲 %</label><input type="number" id="g_alloc" min="0" max="100" step="1"><small>玩家花在我方遊戲的比例；只上我方遊戲就填 100</small></div>
     <div class="field wide">
@@ -324,8 +328,8 @@ tr.best td{background:var(--soft);font-weight:700}
 
   <ul class="gpnote">
     <li><b>合約文字要寫清楚</b>：Bonus 固定扣 X% of Allocated GGR，我的收入就少 X%。如果只寫「固定扣 X%」沒寫乘哪個數字，被解讀成乘入金或 Handle，扣的錢會是好幾倍，甚至把分潤基底扣光。</li>
-    <li><b>跨廠商比較</b>：看最下面「每 $100 玩家淨輸我拿」。各家 Handle 定義不同（PS 只有一半押注進彩池），佔 Handle 不能跨家比；玩家淨輸＝玩家押注 − 派彩，我們的 SQL 就算得出來。</li>
-    <li><b>預設值來源</b>：抽水 7.75%、賽馬成本 1.66%（AmWest B-Pool Economics）；分潤 7% 為假設值，實際以各營運商的附約為準；Handle 倍數、金流、刷退沿用「白牌營運商試算」的內部假設。全部都可以改。</li>
+    <li><b>跨廠商比較</b>：看最下面「每 $100 玩家淨輸我拿」。各家 Handle 定義不同（PS 只有約四成押注進彩池），佔 Handle 不能跨家比；玩家淨輸＝玩家押注 − 派彩，我們的 SQL 就算得出來。</li>
+    <li><b>預設值來源</b>：抽水 7.75%、賽馬成本 1.66%（AmWest B-Pool Economics）；分潤 7% 為假設值，實際以各營運商的附約為準；Bet 倍數、進彩池比例、金流、刷退沿用「白牌營運商試算」的內部假設。全部都可以改。</li>
   </ul>
 </article>
 <!-- 5 -->
@@ -335,9 +339,9 @@ tr.best td{background:var(--soft);font-weight:700}
   <p class="lede">Potent 先扣賽馬成本、金流、刷退，再把毛利的 60–80% 分給它的白牌營運商，剩下的才乘 15% 給我們。下面從入金一路列到我實拿。</p>
   <div class="card inputs">
     <div class="field"><label for="p_dep">月入金（USD）</label><input type="number" id="p_dep" min="0" step="100000"><small>Potent 營運商在我方遊戲的每月玩家入金</small></div>
-    <div class="field"><label for="p_mult">Handle 倍數</label><input type="number" id="p_mult" min="0" step="0.01"><small>和「白牌營運商試算」PS 用同一個數字</small></div>
+    <div class="field"><label for="p_bet">Bet 倍數（Churn）</label><input type="number" id="p_bet" min="0" step="0.1"><small>和「白牌營運商試算」PS 用同一個數字</small></div>
     <div class="field"><label for="p_share">我的分潤 %</label><input type="number" id="p_share" min="0" step="0.5"><small>Games Supply Agreement 草案</small></div>
-    <div class="field"></div>
+    <div class="field"><label for="p_pool">進彩池比例 %</label><input type="number" id="p_pool" min="0" max="100" step="1"><small>PS 約四成押注進彩池（對帳單實際約 44%）</small></div>
     <div class="field wide" style="grid-column:1/-1">
       <span class="flab" id="p_tlab">營運商先分走 %</span>
       <div class="seg" role="group" aria-labelledby="p_tlab">
@@ -395,7 +399,7 @@ tr.best td{background:var(--soft);font-weight:700}
     <li><b>Adjusted Gross Profit</b> ＝ Handle 產生的毛收入 − COGS − payments to Clients − Customer 支付的第三方成本與費用。</li>
     <li><b>COGS</b>（第 1(f) 條）＝ Host Track Fees、Source Market Fees、Tote Fees、北達科他博彩稅（含慈善捐付）、存提款處理成本、拒付款。各項費率沿用 Potent Platform Terms。</li>
     <li><b>payments to Clients</b> 依 Platform Terms 推算：營運商分走平台 Gross Profit（抽水 − Platform Terms COGS 9.86%，含 Game Provider Fees 0.6%）的 60–80%。合約只寫「先扣」，沒寫怎麼算，以 Potent 的 Revenue Statement 為準。</li>
-    <li><b>跨廠商比較</b>：看最下面「每 $100 玩家淨輸我拿」，不要看佔 Handle——PS 只有一半押注進彩池，Handle 比 AW 小一半，佔 Handle 會虛高。</li>
+    <li><b>跨廠商比較</b>：看最下面「每 $100 玩家淨輸我拿」，不要看佔 Handle——PS 只有約四成押注進彩池，Handle 比 AW 小很多，佔 Handle 會虛高。</li>
     <li><b>和 AW 最大的不同</b>：AW 是直接乘 Allocated GGR；PS 是營運商分完才輪到我們，營運商做得越大、級距越高，我們分到的反而越少。</li>
   </ul>
 </article>
@@ -408,7 +412,7 @@ tr.best td{background:var(--soft);font-weight:700}
   <div class="card explain">
     <h3>白牌營運商試算：PS（Potent Systems）</h3>
     <ol>
-      <li>Handle ＝ 入金 × Handle 倍數；TakeOut（抽水）＝ Handle × 20.08%</li>
+      <li>Bet ＝ 入金 × Bet 倍數 8.73；Handle ＝ Bet × 進彩池比例 40%（其餘退回玩家）；TakeOut（抽水）＝ Handle × 20.08%</li>
       <li>COGS ＝ Handle × 9.86%（賽道費 7%、遊戲商 0.6%、Source Market Fee 1.49%、Tote 0.4%、Interface Tote 0.07%、ND 稅 0.25%、慈善 0.05%）</li>
       <li>Gross Profit ＝ TakeOut − COGS</li>
       <li>TaDa 分成依每月 Gross Profit 所在級距，整筆適用該級比例：$100 萬以下 60%、$100–500 萬 70%、$500–1,000 萬 75%、超過 $1,000 萬 80%</li>
@@ -416,7 +420,7 @@ tr.best td{background:var(--soft);font-weight:700}
     </ol>
     <h3>白牌營運商試算：AW（AmWest，B Pool）</h3>
     <ol>
-      <li>Handle ＝ 入金 × Handle 倍數；TakeOut（抽水）＝ Handle × 7.75%</li>
+      <li>Bet ＝ 入金 × Bet 倍數 8；Handle ＝ Bet × 進彩池比例 100%；TakeOut（抽水）＝ Handle × 7.75%</li>
       <li>COS ＝ Handle × 1.66%（pool guarantees、賽道內容相關費用、監管費與稅、host fees、資料費、tote 等）</li>
       <li>Allocated GGR ＝ TakeOut − COS（＝ 遊戲商合約定義的 GGR，假設玩家只玩我方遊戲）</li>
       <li>NGR ＝ Allocated GGR − 獎金、活動費 − 金流手續費 − 刷退、詐欺款 − KYC − Geolocation</li>
@@ -434,7 +438,7 @@ tr.best td{background:var(--soft);font-weight:700}
     </ol>
     <h3>PS 遊戲分潤（TaDa 當遊戲商）</h3>
     <ol>
-      <li>Handle ＝ 入金 × Handle 倍數；毛收入 ＝ Handle × 抽水 20.08%</li>
+      <li>Handle ＝ 入金 × Bet 倍數 × 進彩池比例；毛收入 ＝ Handle × 抽水 20.08%</li>
       <li>COGS ＝ Host Track 7%、Source Market 1.49%、Tote 0.4%、Interface Tote 0.07%、ND 稅 0.25%、慈善 0.05%（佔 Handle）＋ 金流、刷退（佔入金）</li>
       <li>payments to Clients ＝（毛收入 − Platform Terms COGS 9.86%）× 營運商級距 60–80%</li>
       <li>Adjusted Gross Profit ＝ 毛收入 − COGS − payments to Clients − 第三方成本</li>
@@ -442,13 +446,13 @@ tr.best td{background:var(--soft);font-weight:700}
     </ol>
     <h3>跨廠商比較的占比（遊戲分潤頁最下面幾行）</h3>
     <ol>
-      <li>玩家押注（token）：AW ＝ Handle（押注整筆進彩池）；PS ＝ Handle × 2（只有一半進彩池，另一半退回給玩家）</li>
+      <li>玩家押注（token）：AW ＝ Handle（押注整筆進彩池）；PS ＝ Handle ÷ 40%（只有約四成進彩池，其餘退回給玩家）</li>
       <li>玩家淨輸 ＝ 玩家押注 − 派彩；兩家都等於抽水金額</li>
       <li>每 $100 玩家淨輸我拿 ＝ 我實拿 ÷ 玩家淨輸 × 100，跨廠商比較看這個</li>
       <li>佔 Handle 只適合同一家內部比較，因為各家 Handle 的定義不同</li>
     </ol>
     <h3>資料來源</h3>
-    <p>PS：Potent Platform Terms（2026/01/01）、Platform Functionality。AW：AmWest B-Pool Economics（AmWager Average）；設定費、合約年限與月費依 AW 來源資料。AW 遊戲分潤：AmWest Master Game Distribution Agreement（2026/11/03 版）。PS 遊戲分潤：Potent Games Supply Agreement 草案。Handle 倍數、獎金、活動費、刷退、詐欺款、金流手續費、KYC / Geo 為 TaDa 內部假設。</p>
+    <p>PS：Potent Platform Terms（2026/01/01）、Platform Functionality。AW：AmWest B-Pool Economics（AmWager Average）；設定費、合約年限與月費依 AW 來源資料。AW 遊戲分潤：AmWest Master Game Distribution Agreement（2026/11/03 版）。PS 遊戲分潤：Potent Games Supply Agreement 草案。Bet 倍數、進彩池比例、獎金、活動費、刷退、詐欺款、金流手續費、KYC / Geo 為 TaDa 內部假設。</p>
   </div>
   <footer>TaDa Gaming｜美國市場拓展｜內部資料</footer>
 </article>
@@ -460,7 +464,7 @@ tr.best td{background:var(--soft);font-weight:700}
 function calc(p){
   const D=p.deposit;
   // ---- PS
-  const ph=D*p.psChurn, pg=ph*0.2008;
+  const pb=D*p.psBet, ph=pb*p.psPool, pg=ph*0.2008;
   const pcLines=[['Host Track Fees',0.07],['Game Provider Fees',0.006],['Source Market Fees',0.0149],['Tote Fee',0.004],['Interface Tote Fees',0.0007],['North Dakota Tax',0.0025],['Charity Payment',0.0005]].map(([n,r])=>({n,r,v:ph*r}));
   const pc=pcLines.reduce((a,b)=>a+b.v,0), pgp=pg-pc;
   const tiers=[[1e6,0.6],[5e6,0.7],[1e7,0.75],[Infinity,0.8]];
@@ -475,7 +479,7 @@ function calc(p){
   const psOwnT=psOwn.reduce((a,b)=>a+b[1],0), pn=pt-psOwnT;
   const psVar=D*(p.promo+p.cb+(p.psProc?p.proc:0))+(p.psKyc?p.kyc+p.geo:0);
   // ---- AW
-  const ah=D*p.awChurn, ag=ah*0.0775;
+  const ab=D*p.awBet, ah=ab*p.awPool, ag=ah*0.0775;
   const acLines=[['賽道、稅費等 COS',0.0166]].map(([n,r])=>({n,r,v:ah*r}));
   const ac=acLines.reduce((a,b)=>a+b.v,0);
   const aPre=[['獎金、活動費',D*p.promo],['金流手續費',D*p.proc],['刷退、詐欺款',D*p.cb],['KYC + Geolocation',p.kyc+p.geo]];
@@ -487,20 +491,20 @@ function calc(p){
   const agp=(ag-ac)*p.gpRate, at=angr-awPay-agp;
   const awOwn=[['廣告費',p.ad],['年費（月攤）',awAnnual,p.awYear2?null:'第 2 年起'],['設定費（月攤）',awSetup,p.awYear2?'僅第 1 年':null],['自建人力與系統',p.staff]];
   const awOwnT=awOwn.reduce((a,b)=>a+b[1],0), an=at-awOwnT;
-  return {D,ps:{h:ph,ggr:pg,cLines:pcLines,c:pc,gp:pgp,tada:pt,partner:pp,own:psOwn,ownT:psOwnT,net:pn,var:psVar},
-              aw:{h:ah,ggr:ag,cLines:acLines,c:ac,pre:aPre,preT:aPreT,ngr:angr,share,pay:awPay,gpf:agp,tada:at,own:awOwn,ownT:awOwnT,net:an,var:aPreT}};
+  return {D,ps:{bet:pb,h:ph,ggr:pg,cLines:pcLines,c:pc,gp:pgp,tada:pt,partner:pp,own:psOwn,ownT:psOwnT,net:pn,var:psVar},
+              aw:{bet:ab,h:ah,ggr:ag,cLines:acLines,c:ac,pre:aPre,preT:aPreT,ngr:angr,share,pay:awPay,gpf:agp,tada:at,own:awOwn,ownT:awOwnT,net:an,var:aPreT}};
 }
 
 
-const DEF={deposit:6000000,ad:800000,psChurn:3.70,awChurn:8,promo:4,cb:1.5,proc:2.4696,kyc:22000,geo:22000,gpRate:7,staff:0,psKyc:false,psWaive:false,psSingle:false,awYear2:false,psCliff:true,psProc:true};
+const DEF={deposit:6000000,ad:800000,psBet:8.73,psPool:40,awBet:8,awPool:100,promo:4,cb:1.5,proc:2.4696,kyc:22000,geo:22000,gpRate:7,staff:0,psKyc:false,psWaive:false,psSingle:false,awYear2:false,psCliff:true,psProc:true};
 const KEY='wl-calc-v4';
 let S=Object.assign({},DEF);
 try{const s=localStorage.getItem(KEY); if(s) S=Object.assign({},DEF,JSON.parse(s));}catch(e){}
-if(+S.psChurn===4.024) S.psChurn=DEF.psChurn; // 舊預設 4.024 抽水與 RTP 不一致，改用 3.70
+if(+S.psBet===7.4&&+S.psPool===50){S.psBet=DEF.psBet;S.psPool=DEF.psPool;} // 舊預設 7.40×50% 改為 8.73×40%
 const $=id=>document.getElementById(id);
-const numIds=['deposit','ad','psChurn','awChurn','promo','cb','proc','kyc','geo','gpRate','staff'];
+const numIds=['deposit','ad','psBet','psPool','awBet','awPool','promo','cb','proc','kyc','geo','gpRate','staff'];
 const chkIds=['psKyc','psWaive','psSingle','psCliff','psProc'];
-const P=()=>({deposit:+S.deposit||0,ad:+S.ad||0,psChurn:+S.psChurn||0,awChurn:+S.awChurn||0,promo:(+S.promo||0)/100,cb:(+S.cb||0)/100,proc:(+S.proc||0)/100,kyc:+S.kyc||0,geo:+S.geo||0,gpRate:(+S.gpRate||0)/100,staff:+S.staff||0,psKyc:!!S.psKyc,psWaive:!!S.psWaive,psSingle:!!S.psSingle,awYear2:!!S.awYear2,psCliff:!!S.psCliff,psProc:!!S.psProc});
+const P=()=>({deposit:+S.deposit||0,ad:+S.ad||0,psBet:+S.psBet||0,psPool:(+S.psPool||0)/100,awBet:+S.awBet||0,awPool:(+S.awPool||0)/100,promo:(+S.promo||0)/100,cb:(+S.cb||0)/100,proc:(+S.proc||0)/100,kyc:+S.kyc||0,geo:+S.geo||0,gpRate:(+S.gpRate||0)/100,staff:+S.staff||0,psKyc:!!S.psKyc,psWaive:!!S.psWaive,psSingle:!!S.psSingle,awYear2:!!S.awYear2,psCliff:!!S.psCliff,psProc:!!S.psProc});
 const usd=v=>(v<0?'(':'')+Math.round(Math.abs(v)).toLocaleString('en-US')+(v<0?')':'');
 const wan=v=>(v<0?'−':'')+'$'+(Math.abs(v)/1e4).toLocaleString('en-US',{minimumFractionDigits:1,maximumFractionDigits:1})+' 萬';
 const wan0=v=>'$'+(v/1e4).toLocaleString('en-US',{maximumFractionDigits:0})+' 萬';
@@ -525,7 +529,7 @@ function render(){syncInputs();const p=P(),r=calc(p),D=p.deposit||1;
   const pad=(g,n)=>g.concat(Array(Math.max(n-g.length,0)).fill(blank));
   const psG=[
     [['入金 Cash In',D,null]],
-    [[`Total Handle（入金 × ${p.psChurn}）`,ps.h,null,'k']],
+    [[`Total Bet（入金 × ${+p.psBet.toFixed(2)}）`,ps.bet,null],[`Total Handle（Bet × ${+(p.psPool*100).toFixed(1)}%）`,ps.h,null,'k']],
     [['TakeOut（抽水）',ps.ggr,ps.h?ps.ggr/ps.h:0,'k']],
     ps.cLines.map(l=>['－ '+l.n,l.v,l.r]),
     [['Gross Profit（可分潤）',ps.gp,ps.h?ps.gp/ps.h:0,'k']],
@@ -535,11 +539,11 @@ function render(){syncInputs();const p=P(),r=calc(p),D=p.deposit||1;
     [['淨利',ps.net,{m:ps.net/D},'n']]];
   const awG=[
     [['入金 Cash In',D,null]],
-    [[`Total Handle（入金 × ${p.awChurn}）`,aw.h,null,'k']],
+    [[`Total Bet（入金 × ${+p.awBet.toFixed(2)}）`,aw.bet,null],[`Total Handle（Bet × ${+(p.awPool*100).toFixed(1)}%）`,aw.h,null,'k']],
     [['TakeOut（抽水）',aw.ggr,aw.h?aw.ggr/aw.h:0,'k']],
     [...aw.cLines.map(l=>['－ '+l.n,l.v,l.r]),['Allocated GGR（遊戲商分潤基底）',aw.ggr-aw.c,aw.h?(aw.ggr-aw.c)/aw.h:0,'k'],...aw.pre.map(([n,v])=>['－ '+n,v,null])],
     [['NGR（可分潤）',aw.ngr,aw.h?aw.ngr/aw.h:0,'k']],
-    [['→ To AmWest（分潤扣除已付）',aw.pay,aw.h?aw.pay/aw.h:0],[`→ Game Provider（Allocated GGR × ${(p.gpRate*100).toFixed(1)}%）`,aw.gpf,aw.h?aw.gpf/aw.h:0]],
+    [['→ To AmWest（分潤扣除已付）',aw.pay,aw.h?aw.pay/aw.h:0],[`→ Game Provider（Allocated GGR × ${+(p.gpRate*100).toFixed(1)}%）`,aw.gpf,aw.h?aw.gpf/aw.h:0]],
     [['→ To TaDa',aw.tada,aw.h?aw.tada/aw.h:0,'t']],
     aw.own.map(([n,v,h])=>['－ '+n,v,h||null]),
     [['淨利',aw.net,{m:aw.net/D},'n']]];
@@ -563,23 +567,23 @@ document.querySelectorAll('#presets button').forEach(b=>b.addEventListener('clic
 $('y1').addEventListener('click',()=>{S.awYear2=false;render();});$('y2').addEventListener('click',()=>{S.awYear2=true;render();});
 $('reset').addEventListener('click',()=>{S=Object.assign({},DEF);render();});
 // game provider
-const GDEF={dep:1000000,mult:8,share:7,alloc:100,bfix:5,bb:'ggr',take:7.75,cos:1.66,proc:2.4696,cb:1.5,kyc:0,dProc:false,dCb:false,dKyc:false};
+const GDEF={dep:1000000,bet:8,pool:100,share:7,alloc:100,bfix:5,bb:'ggr',take:7.75,cos:1.66,proc:2.4696,cb:1.5,kyc:0,dProc:false,dCb:false,dKyc:false};
 const GKEY='wl-gp-v2';
 let GS=Object.assign({},GDEF);
 try{const s=localStorage.getItem(GKEY);if(s)GS=Object.assign({},GDEF,JSON.parse(s));}catch(e){}
-const gNum=['dep','mult','share','alloc','bfix','take','cos','proc','cb','kyc'];
+const gNum=['dep','bet','pool','share','alloc','bfix','take','cos','proc','cb','kyc'];
 const gChk=['dProc','dCb','dKyc'];
 const BBLAB={ggr:'Allocated GGR',dep:'入金',handle:'Handle'};
 const money=v=>(v<0?'−$':'$')+Math.round(Math.abs(v)).toLocaleString('en-US');
 const fx=(v,d)=>(+v).toLocaleString('en-US',{maximumFractionDigits:d==null?2:d});
-function gQ(){const n=k=>+GS[k]||0;return {dep:n('dep'),mult:n('mult'),share:n('share')/100,alloc:Math.min(n('alloc'),100)/100,bfix:n('bfix')/100,bb:'ggr',take:n('take')/100,cos:n('cos')/100,proc:n('proc')/100,cb:n('cb')/100,kyc:n('kyc'),dProc:!!GS.dProc,dCb:!!GS.dCb,dKyc:!!GS.dKyc};}
+function gQ(){const n=k=>+GS[k]||0;return {dep:n('dep'),bet:n('bet'),pool:n('pool')/100,share:n('share')/100,alloc:Math.min(n('alloc'),100)/100,bfix:n('bfix')/100,bb:'ggr',take:n('take')/100,cos:n('cos')/100,proc:n('proc')/100,cb:n('cb')/100,kyc:n('kyc'),dProc:!!GS.dProc,dCb:!!GS.dCb,dKyc:!!GS.dKyc};}
 function gCalc(q,mode,fix){
-  const h=q.dep*q.mult,take=h*q.take,cos=h*q.cos,ggr=take-cos,other=ggr*(1-q.alloc),alloc=ggr-other;
+  const bet=q.dep*q.bet,h=bet*q.pool,take=h*q.take,cos=h*q.cos,ggr=take-cos,other=ggr*(1-q.alloc),alloc=ggr-other;
   const bbase={ggr:alloc,dep:q.dep,handle:h}[q.bb];
   const bonus=mode==='fix'?bbase*(fix==null?q.bfix:fix):0;
   const proc=q.dProc?q.dep*q.proc:0,cb=q.dCb?q.dep*q.cb:0,kyc=q.dKyc?q.kyc:0;
   const raw=alloc-bonus-proc-cb-kyc,base=Math.max(raw,0),get=base*q.share;
-  return {h,take,cos,ggr,other,alloc,bonus,proc,cb,kyc,raw,base,get};
+  return {bet,h,take,cos,ggr,other,alloc,bonus,proc,cb,kyc,raw,base,get};
 }
 function gSync(){gNum.forEach(k=>{const el=$('g_'+k);if(document.activeElement!==el)el.value=GS[k];});
   gChk.forEach(k=>$('g_'+k).checked=!!GS[k]);}
@@ -599,10 +603,11 @@ function gRender(){gSync();const q=gQ(),A=gCalc(q,'none'),B=gCalc(q,'fix');
   $('g_v3s').textContent=`等於現行收入的 ${A.get>0?fx(Math.abs(one.get-B.get)/A.get*100,1):'0'}%`;
   // waterfall
   const dl=(lab,on)=>on?lab:lab+'<span class="mut">（合約不扣）</span>';
-  const tok=A.h*q.alloc,nl=A.take*q.alloc; // AW 押注整筆進彩池：token＝Handle；玩家淨輸＝抽水
+  const tok=A.bet*q.alloc,nl=A.take*q.alloc; // 玩家淨輸＝抽水（沒進彩池的押注全數退回）
   const rows=[
     ['入金 Cash In',q.dep,q.dep],
-    [`Total Handle（入金 × ${fx(q.mult)}）`,A.h,B.h,'k'],
+    [`Total Bet（入金 × ${fx(q.bet)}）`,A.bet,B.bet],
+    [`Total Handle（Bet × ${fx(q.pool*100,1)}%）`,A.h,B.h,'k'],
     [`抽水 Takeout（Handle × ${fx(q.take*100)}%）`,A.take,B.take],
     [`－ 賽馬成本（Handle × ${fx(q.cos*100)}%：host fees、source market fees、tote fees、法規費、稅）`,-A.cos,-B.cos],
     ['GGR（合約定義）',A.ggr,B.ggr,'k'],
@@ -616,11 +621,11 @@ function gRender(){gSync();const q=gQ(),A=gCalc(q,'none'),B=gCalc(q,'fix');
     [`× 我的分潤 ${fx(q.share*100)}%`,null,null],
     ['我實拿',A.get,B.get,'n'],
     ['每 $100 入金我拿',q.dep?A.get/q.dep*100:0,q.dep?B.get/q.dep*100:0,'c'],
-    ['每 $100 玩家押注（token）我拿',tok?A.get/tok*100:0,tok?B.get/tok*100:0,'c'],
+    ['每 $100 玩家押注（Bet）我拿',tok?A.get/tok*100:0,tok?B.get/tok*100:0,'c'],
     ['每 $100 玩家淨輸我拿 <span class="mut">← 跨廠商比較看這個</span>',nl?A.get/nl*100:0,nl?B.get/nl*100:0,'c'],
     ['分潤基底佔玩家淨輸',nl?A.base/nl:0,nl?B.base/nl:0,'p']];
   const cell=(v,c)=>v==null?'<td></td>':`<td class="r num">${c==='c'?'$'+v.toFixed(2):c==='p'?(v*100).toFixed(1)+'%':money(v)}</td>`;
-  const pc=(v,h,i,cls)=>(v==null||cls==='c'||cls==='p'||i<2||!h)?'<td></td>':`<td class="r num">${(v/h*100).toFixed(2)}%</td>`;
+  const pc=(v,h,i,cls)=>(v==null||cls==='c'||cls==='p'||i<3||!h)?'<td></td>':`<td class="r num">${(v/h*100).toFixed(2)}%</td>`;
   $('g_tb').innerHTML=rows.map(([lab,a,b,cls],i)=>{const d=a==null?null:b-a,m=cls==='c'||cls==='p';
     return `<tr class="${m?'':cls||''}"><td class="${cls&&!m?'':'ind'}">${lab}</td>${cell(a,cls)}${pc(a,A.h,i,cls)}${cell(b,cls)}${pc(b,B.h,i,cls)}<td class="r num ${d<0?'loss':''}">${d==null||Math.abs(d)<(cls==='p'?1e-6:0.005)?'':(cls==='c'?(d<0?'−$':'$')+Math.abs(d).toFixed(2):cls==='p'?(d<0?'−':'+')+Math.abs(d*100).toFixed(1)+' 個百分點':money(d))}</td></tr>`;}).join('');
   try{localStorage.setItem(GKEY,JSON.stringify(GS));}catch(e){}
@@ -631,17 +636,17 @@ gChk.forEach(k=>$('g_'+k).addEventListener('change',e=>{GS[k]=e.target.checked;g
 $('g_reset').addEventListener('click',()=>{GS=Object.assign({},GDEF);gRender();});
 gRender();
 // PS game provider
-const PG_DEF={dep:1000000,mult:3.70,share:15,tier:'auto',take:20.08,host:7,src:1.49,tote:0.4,itote:0.07,nd:0.25,char:0.05,gpf:0.6,proc:2.4696,cb:1.5,third:0,bonus:4,dProc:true,dCb:true,dBonus:false};
+const PG_DEF={dep:1000000,bet:8.73,pool:40,share:15,tier:'auto',take:20.08,host:7,src:1.49,tote:0.4,itote:0.07,nd:0.25,char:0.05,gpf:0.6,proc:2.4696,cb:1.5,third:0,bonus:4,dProc:true,dCb:true,dBonus:false};
 const PG_KEY='wl-psgp-v1';
 let PGS=Object.assign({},PG_DEF);
 try{const s=localStorage.getItem(PG_KEY);if(s)PGS=Object.assign({},PG_DEF,JSON.parse(s));}catch(e){}
-const pgNum=['dep','mult','share','take','host','src','tote','itote','nd','char','gpf','proc','cb','third','bonus'];
+if(+PGS.bet===7.4&&+PGS.pool===50){PGS.bet=PG_DEF.bet;PGS.pool=PG_DEF.pool;}
+const pgNum=['dep','bet','pool','share','take','host','src','tote','itote','nd','char','gpf','proc','cb','third','bonus'];
 const pgChk=['dProc','dCb','dBonus'];
-const PG_POOL=0.5; // PS 每押 $1 只有 $0.5 進彩池
 const PG_TIERS=[[1e6,.6,'$100 萬以下'],[5e6,.7,'$100–500 萬'],[1e7,.75,'$500–1,000 萬'],[Infinity,.8,'超過 $1,000 萬']];
-function pgQ(){const n=k=>+PGS[k]||0,r=k=>n(k)/100;return {dep:n('dep'),mult:n('mult'),share:r('share'),tier:PGS.tier,take:r('take'),host:r('host'),src:r('src'),tote:r('tote'),itote:r('itote'),nd:r('nd'),char:r('char'),gpf:r('gpf'),proc:r('proc'),cb:r('cb'),third:n('third'),bonus:r('bonus'),dProc:!!PGS.dProc,dCb:!!PGS.dCb,dBonus:!!PGS.dBonus};}
+function pgQ(){const n=k=>+PGS[k]||0,r=k=>n(k)/100;return {dep:n('dep'),bet:n('bet'),pool:r('pool'),share:r('share'),tier:PGS.tier,take:r('take'),host:r('host'),src:r('src'),tote:r('tote'),itote:r('itote'),nd:r('nd'),char:r('char'),gpf:r('gpf'),proc:r('proc'),cb:r('cb'),third:n('third'),bonus:r('bonus'),dProc:!!PGS.dProc,dCb:!!PGS.dCb,dBonus:!!PGS.dBonus};}
 function pgCalc(q,tierOv){
-  const h=q.dep*q.mult,gross=h*q.take;
+  const bet=q.dep*q.bet,h=bet*q.pool,gross=h*q.take;
   const L=[['Host Track Fees',q.host],['Source Market Fees',q.src],['Tote Fee',q.tote],['Interface Tote Fees',q.itote],['North Dakota Tax',q.nd],['Charity Payment',q.char]].map(([n,r])=>({n,r,v:h*r}));
   const Lsum=L.reduce((a,b)=>a+b.v,0),gpfV=h*q.gpf;
   const platGP=gross-Lsum-gpfV; // Platform Terms 的 Gross Profit：營運商分成的基礎
@@ -651,7 +656,7 @@ function pgCalc(q,tierOv){
   const proc=q.dProc?q.dep*q.proc:0,cb=q.dCb?q.dep*q.cb:0,bonus=q.dBonus?q.dep*q.bonus:0,third=q.third;
   const afterCogs=gross-Lsum-proc-cb;
   const raw=afterCogs-client-third-bonus,base=Math.max(raw,0),get=base*q.share;
-  return {h,gross,L,gpfV,proc,cb,afterCogs,platGP,band,tier,client,third,bonus,base,get};
+  return {bet,h,gross,L,gpfV,proc,cb,afterCogs,platGP,band,tier,client,third,bonus,base,get};
 }
 function pgSync(){pgNum.forEach(k=>{const el=$('p_'+k);if(document.activeElement!==el)el.value=PGS[k];});
   pgChk.forEach(k=>$('p_'+k).checked=!!PGS[k]);
@@ -667,7 +672,8 @@ function pgRender(){pgSync();const q=pgQ(),r=pgCalc(q),H=r.h||1;
   const dl=(lab,on,off)=>on?lab:lab+`<span class="mut">（${off}）</span>`;
   const rows=[
     ['入金 Cash In',q.dep,null],
-    [`Handle（入金 × ${fx(q.mult)}）`,r.h,null,'k'],
+    [`Total Bet（入金 × ${fx(q.bet)}）`,r.bet,null],
+    [`Total Handle（Bet × ${fx(q.pool*100,1)}%）`,r.h,null,'k'],
     [`抽水 Takeout（Handle × ${fx(q.take*100)}%）`,r.gross,r.gross/H,'k'],
     ...r.L.map(l=>[`－ ${l.n}（Handle × ${fx(l.r*100)}%）`,-l.v,-l.r]),
     [dl(`－ 金流手續費（入金 × ${fx(q.proc*100)}%）`,q.dProc,'不扣'),-r.proc,-r.proc/H],
@@ -679,11 +685,11 @@ function pgRender(){pgSync();const q=pgQ(),r=pgCalc(q),H=r.h||1;
     ['Adjusted Gross Profit',r.base,r.base/H,'k'],
     [`× 我的分潤 ${fx(q.share*100)}%`,null,null],
     ['我實拿',r.get,r.get/H,'n']];
-  const tok=r.h/PG_POOL,loss=r.gross; // PS 只有一半押注進彩池：token＝Handle÷50%；退回的那半全數還給玩家，玩家淨輸＝抽水
+  const tok=r.bet,loss=r.gross; // 沒進彩池的押注全數退回，玩家淨輸＝抽水
   const mrow=(lab,val)=>`<tr><td class="ind">${lab}</td><td class="r num">${val}</td><td></td></tr>`;
   $('p_tb').innerHTML=rows.map(([lab,v,ph,cls])=>`<tr class="${cls||''}"><td class="${cls?'':'ind'}">${lab}</td><td class="r num">${v==null?'':money(v)}</td><td class="r num">${ph==null?'':(ph*100).toFixed(2)+'%'}</td></tr>`).join('')
     +mrow('每 $100 入金我拿','$'+(q.dep?r.get/q.dep*100:0).toFixed(2))
-    +mrow('每 $100 玩家押注（token ＝ Handle × 2）我拿','$'+(tok?r.get/tok*100:0).toFixed(2))
+    +mrow('每 $100 玩家押注（Bet）我拿','$'+(tok?r.get/tok*100:0).toFixed(2))
     +mrow('每 $100 玩家淨輸我拿 <span class="mut">← 跨廠商比較看這個</span>','$'+(loss?r.get/loss*100:0).toFixed(2))
     +mrow('分潤基底佔玩家淨輸',(loss?r.base/loss*100:0).toFixed(1)+'%');
   $('p_sens').innerHTML=PG_TIERS.map(([,t])=>{const s=pgCalc(q,t),d=s.get-r.get,cur=Math.abs(t-r.tier)<1e-9;
