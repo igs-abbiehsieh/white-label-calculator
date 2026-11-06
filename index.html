@@ -143,6 +143,15 @@ mark.warn{background:transparent;color:var(--emph);font-weight:700}
 .explain li{margin-bottom:5px}
 .explain p{margin:6px 0;max-width:75ch}
 footer{color:var(--muted);font-size:12px;margin-top:40px}
+
+/* game provider */
+.gpw td,.gpw th,.gpout td,.gpout th{padding:9px 14px;font-size:13.5px}
+.gpw td.r,.gpw th.r,.gpout td,.gpout th{white-space:nowrap}
+.gpw td:first-child{min-width:260px}
+tr.best td{background:var(--soft);font-weight:700}
+.gph{font-size:19px;margin:36px 0 12px}
+.gpnote{margin:14px 0 0;padding-left:20px;font-size:13px;color:var(--muted);max-width:80ch}
+.gpnote li{margin:6px 0}
 </style>
 </head>
 <body>
@@ -157,7 +166,9 @@ footer{color:var(--muted);font-size:12px;margin-top:40px}
   <ol>
     <li><a href="#compare" data-p="compare">兩案模式比較</a></li>
     <li><a href="#summary" data-p="summary">結論摘要</a></li>
-    <li><a href="#calc" data-p="calc">月損益試算</a></li>
+    <li><a href="#calc" data-p="calc">白牌營運商試算</a></li>
+    <li><a href="#gp" data-p="gp">AW 遊戲分潤</a></li>
+    <li><a href="#psgp" data-p="psgp">PS 遊戲分潤</a></li>
     <li><a href="#method" data-p="method">計算說明與來源</a></li>
   </ol>
 </nav>
@@ -175,11 +186,11 @@ footer{color:var(--muted);font-size:12px;margin-top:40px}
       <tr><td>設定費</td><td>$10 萬</td><td>$35 萬（第 1 年預付分潤，可抵分潤）</td></tr>
       <tr><td>年費 / 自建成本</td><td>$4 萬（達標可豁免）</td><td>第 2–5 年年費 $75 萬（每月 $62,500，可抵分潤）<br>另加自建人力與系統費，可參照 Dara</td></tr>
       <tr><td>合約年限</td><td>無強制年限</td><td>綁約 5 年</td></tr>
-      <tr><td>分潤方式</td><td>依每月 Gross Profit 級距，整筆適用給 TaDa：<br>$100 萬以下 60%<br>$100–500 萬 70%<br>$500–1,000 萬 75%<br>超過 $1,000 萬 80%</td><td>AW 取 NGR 12%（保底 Handle 0.5%）</td></tr>
+      <tr><td>分潤方式</td><td>依每月 Gross Profit 級距，整筆適用給 TaDa：<br>$100 萬以下 60%<br>$100–500 萬 70%<br>$500–1,000 萬 75%<br>超過 $1,000 萬 80%<br>遊戲商費用（Handle 0.6%）已含在 COGS</td><td>AW 取 NGR 12%（保底 Handle 0.5%）<br>另付遊戲商：Allocated GGR × 7%</td></tr>
       <tr><td>產品彈性</td><td>依 PS 平台既有功能</td><td>可自行調整，品牌差異化</td></tr>
     </tbody>
   </table></div>
-  <p class="source">來源：PS Platform Terms（2026/01/01）、PS Platform Functionality；AW 設定費與合約年限依 AW 來源資料</p>
+  <p class="source">來源：PS Platform Terms（2026/01/01）、PS Platform Functionality；AmWest B-Pool Economics；AW 設定費與合約年限依 AW 來源資料</p>
 </article>
 
 <!-- 2 -->
@@ -199,17 +210,19 @@ footer{color:var(--muted);font-size:12px;margin-top:40px}
         <ul><li class="em">網站自建＝調整彈性高，不會大家都長一樣，改東西較快</li><li id="s2a"></li><li id="s2b"></li></ul></li>
       <li><h3>缺點：AW 的自建成本要守住</h3>
         <ul><li>前期啟動成本與投入成本相對高（網站自建與維護）</li><li>5 年綁約期長</li><li id="s3a"></li></ul></li>
+      <li><h3 id="s4h"></h3>
+        <ul><li id="s4a"></li><li id="s4b"></li><li id="s4c"></li></ul></li>
     </ol>
   </div>
-  <p class="source">數字依「月損益試算」目前的條件即時計算；<mark class="warn">AW 尚未計入自建網站與人力成本</mark>。</p>
+  <p class="source">第 1–3 點依「白牌營運商試算」、第 4 點依「AW／PS 遊戲分潤」目前的條件即時計算；<mark class="warn">AW 尚未計入自建網站與人力成本</mark>。</p>
   <a class="go" href="#calc" data-p="calc">調整試算條件</a>
 </article>
 
 <!-- 3 -->
-<article class="page" id="p-calc" data-title="月損益試算" hidden>
-  <p class="meta">TaDa Gaming｜美國市場拓展｜Potent Systems（PS） vs AmWest（AW）</p>
-  <h1>月損益試算</h1>
-  <p class="lede">調整月入金與營運假設，即時比較兩案的月淨利。廠商費率依原始文件，營運假設可自行修改。</p>
+<article class="page" id="p-calc" data-title="白牌營運商試算" hidden>
+  <p class="meta">TaDa 當白牌營運商｜Potent Systems（PS） vs AmWest（AW）</p>
+  <h1>白牌營運商試算</h1>
+  <p class="lede">TaDa 自己經營白牌站時的月淨利。調整月入金與營運假設，即時比較兩案。廠商費率依原始文件，營運假設可自行修改。</p>
   <div class="card inputs">
     <div class="field wide">
       <label for="deposit">月入金（USD）</label>
@@ -224,10 +237,10 @@ footer{color:var(--muted);font-size:12px;margin-top:40px}
     <div class="field"><label for="ad">月廣告費（USD）</label><input type="number" id="ad" min="0" step="10000"></div>
     <div class="field"><label for="staff">AW 自建人力與系統月成本</label><input type="number" id="staff" min="0" step="10000"><small>網站自建與維運、客服人力等</small></div>
     <div class="field wide">
-      <span class="flab" id="yrlab">AW 合約年度</span>
+      <span class="flab" id="yrlab">合約年度</span>
       <div class="seg" role="group" aria-labelledby="yrlab">
-        <button type="button" id="y1">第 1 年<small>設定費 $35 萬月攤，可抵分潤</small></button>
-        <button type="button" id="y2">第 2–5 年<small>年費 $75 萬月攤，可抵分潤</small></button>
+        <button type="button" id="y1">第 1 年<small>AW 設定費 $35 萬、PS 設定費 $10 萬月攤</small></button>
+        <button type="button" id="y2">第 2–5 年<small>AW 年費 $75 萬月攤；PS 設定費已攤完</small></button>
       </div>
       <small style="display:block;color:var(--muted);font-size:12px;margin-top:4px">設定費、年費都按月攤列成本；AW 分潤先抵這筆，超出的部分才另付（AW term sheet）。</small>
     </div>
@@ -266,34 +279,180 @@ footer{color:var(--muted);font-size:12px;margin-top:40px}
 </article>
 
 <!-- 4 -->
+<article class="page" id="p-gp" data-title="AW 遊戲分潤" hidden>
+  <p class="meta">TaDa 當遊戲商｜AmWest 平台上的營運商付給我們的分潤</p>
+  <h1>AW 遊戲分潤：7% × Allocated GGR</h1>
+  <p class="lede">AmWest 從抽水扣掉賽馬成本得到 GGR，按玩家花在我方遊戲的比例分配成 Allocated GGR，直接乘 7% 給我們，Bonus、金流、KYC 都不扣。營運商若要求合約寫明「Bonus 固定扣 X%」，分潤基底會先變小。下面從入金一路列到我實拿，A、B 兩種寫法並排比較。</p>
+  <div class="card inputs">
+    <div class="field"><label for="g_dep">月入金（USD）</label><input type="number" id="g_dep" min="0" step="100000"><small>這家營運商每月的玩家入金</small></div>
+    <div class="field"><label for="g_mult">Handle 倍數</label><input type="number" id="g_mult" min="0" step="0.1"><small>入金平均被押幾輪</small></div>
+    <div class="field"><label for="g_share">我的分潤 %</label><input type="number" id="g_share" min="0" step="0.5"><small>Addendum 上的比率</small></div>
+    <div class="field"><label for="g_alloc">歸屬到我方遊戲 %</label><input type="number" id="g_alloc" min="0" max="100" step="1"><small>玩家花在我方遊戲的比例；只上我方遊戲就填 100</small></div>
+    <div class="field wide">
+      <label for="g_bfix">營運商要求：Bonus 固定扣 %（佔 Allocated GGR）</label>
+      <input type="number" id="g_bfix" min="0" step="0.5">
+      <small>合約要寫明是「X% of Allocated GGR」，避免被解讀成乘入金或 Handle（那樣會扣更多）</small>
+    </div>
+    <details class="adv">
+      <summary>進階假設</summary>
+      <div class="advgrid">
+        <div class="field"><label for="g_take">抽水 Takeout %（佔 Handle）</label><input type="number" id="g_take" min="0" step="0.01"></div>
+        <div class="field"><label for="g_cos">賽馬成本 %（佔 Handle）</label><input type="number" id="g_cos" min="0" step="0.01"></div>
+        <div class="field"><label for="g_proc">金流費率 %（佔入金）</label><input type="number" id="g_proc" min="0" step="0.01"></div>
+        <div class="field"><label for="g_cb">刷退、詐欺款率 %（佔入金）</label><input type="number" id="g_cb" min="0" step="0.1"></div>
+        <div class="field"><label for="g_kyc">KYC + Geolocation 月費</label><input type="number" id="g_kyc" min="0" step="1000"></div>
+        <label class="check"><input type="checkbox" id="g_dProc">合約也扣金流手續費</label>
+        <label class="check"><input type="checkbox" id="g_dCb">合約也扣刷退、詐欺款</label>
+        <label class="check"><input type="checkbox" id="g_dKyc">合約也扣 KYC / Geolocation</label>
+        <button type="button" class="reset" id="g_reset">還原預設值</button>
+      </div>
+    </details>
+  </div>
+
+  <div class="card verdict" aria-live="polite">
+    <div><div class="who">B 每月少拿</div><div class="big num loss" id="g_v1"></div><div class="sub num" id="g_v1s"></div></div>
+    <div><div class="who">要維持現行收入，分潤要開到</div><div class="big num" id="g_v2"></div><div class="sub num" id="g_v2s"></div></div>
+    <div><div class="who" id="g_v3w"></div><div class="big num" id="g_v3"></div><div class="sub" id="g_v3s"></div></div>
+  </div>
+
+  <div class="tw" style="margin-top:18px"><table class="gpw">
+    <thead><tr><th class="h0">項目</th><th class="hps r">A 現行<br>（不扣 Bonus）</th><th class="hps r">佔 Handle</th><th class="haw r" id="g_hB"></th><th class="haw r">佔 Handle</th><th class="h0 r">B − A</th></tr></thead>
+    <tbody id="g_tb"></tbody>
+  </table></div>
+  <p class="calcnote">分潤基底若算出負數以 0 計（合約未寫明是否遞延到下個月）。賽馬成本 AmWest 只給合計數，沒有拆細項。</p>
+
+
+  <ul class="gpnote">
+    <li><b>合約文字要寫清楚</b>：Bonus 固定扣 X% of Allocated GGR，我的收入就少 X%。如果只寫「固定扣 X%」沒寫乘哪個數字，被解讀成乘入金或 Handle，扣的錢會是好幾倍，甚至把分潤基底扣光。</li>
+    <li><b>跨廠商比較</b>：看最下面「每 $100 玩家淨輸我拿」。各家 Handle 定義不同（PS 只有一半押注進彩池），佔 Handle 不能跨家比；玩家淨輸＝玩家押注 − 派彩，我們的 SQL 就算得出來。</li>
+    <li><b>預設值來源</b>：抽水 7.75%、賽馬成本 1.66%（AmWest B-Pool Economics）；分潤 7% 為假設值，實際以各營運商的附約為準；Handle 倍數、金流、刷退沿用「白牌營運商試算」的內部假設。全部都可以改。</li>
+  </ul>
+</article>
+<!-- 5 -->
+<article class="page" id="p-psgp" data-title="PS 遊戲分潤" hidden>
+  <p class="meta">TaDa 當遊戲商｜Potent 平台付給我們的分潤</p>
+  <h1>PS 遊戲分潤：15% × Adjusted Gross Profit</h1>
+  <p class="lede">Potent 先扣賽馬成本、金流、刷退，再把毛利的 60–80% 分給它的白牌營運商，剩下的才乘 15% 給我們。下面從入金一路列到我實拿。</p>
+  <div class="card inputs">
+    <div class="field"><label for="p_dep">月入金（USD）</label><input type="number" id="p_dep" min="0" step="100000"><small>Potent 營運商在我方遊戲的每月玩家入金</small></div>
+    <div class="field"><label for="p_mult">Handle 倍數</label><input type="number" id="p_mult" min="0" step="0.01"><small>和「白牌營運商試算」PS 用同一個數字</small></div>
+    <div class="field"><label for="p_share">我的分潤 %</label><input type="number" id="p_share" min="0" step="0.5"><small>Games Supply Agreement 草案</small></div>
+    <div class="field"></div>
+    <div class="field wide" style="grid-column:1/-1">
+      <span class="flab" id="p_tlab">營運商先分走 %</span>
+      <div class="seg" role="group" aria-labelledby="p_tlab">
+        <button type="button" data-pt="auto">自動<small>依月毛利級距</small></button>
+        <button type="button" data-pt="60">60%<small>毛利 $100 萬以下</small></button>
+        <button type="button" data-pt="70">70%<small>$100–500 萬</small></button>
+        <button type="button" data-pt="75">75%<small>$500–1,000 萬</small></button>
+        <button type="button" data-pt="80">80%<small>超過 $1,000 萬</small></button>
+      </div>
+      <small style="display:block;color:var(--muted);font-size:12px;margin-top:4px">依 Potent Platform Terms，營運商依每月 Gross Profit 落在哪個級距，整筆分走該比例。</small>
+    </div>
+    <details class="adv">
+      <summary>進階假設</summary>
+      <div class="advgrid">
+        <div class="field"><label for="p_take">抽水 Takeout %（佔 Handle）</label><input type="number" id="p_take" min="0" step="0.01"></div>
+        <div class="field"><label for="p_host">Host Track Fees %</label><input type="number" id="p_host" min="0" step="0.01"></div>
+        <div class="field"><label for="p_src">Source Market Fees %</label><input type="number" id="p_src" min="0" step="0.01"></div>
+        <div class="field"><label for="p_tote">Tote Fee %</label><input type="number" id="p_tote" min="0" step="0.01"></div>
+        <div class="field"><label for="p_itote">Interface Tote Fees %</label><input type="number" id="p_itote" min="0" step="0.01"></div>
+        <div class="field"><label for="p_nd">North Dakota Tax %</label><input type="number" id="p_nd" min="0" step="0.01"></div>
+        <div class="field"><label for="p_char">Charity Payment %</label><input type="number" id="p_char" min="0" step="0.01"></div>
+        <div class="field"><label for="p_gpf">平台 COGS 的 Game Provider Fees %</label><input type="number" id="p_gpf" min="0" step="0.01"><small>只用來算營運商分走的金額</small></div>
+        <div class="field"><label for="p_proc">金流費率 %（佔入金）</label><input type="number" id="p_proc" min="0" step="0.01"></div>
+        <div class="field"><label for="p_cb">刷退、詐欺款率 %（佔入金）</label><input type="number" id="p_cb" min="0" step="0.1"></div>
+        <div class="field"><label for="p_third">Customer 支付的第三方成本（月）</label><input type="number" id="p_third" min="0" step="1000"></div>
+        <div class="field"><label for="p_bonus">Bonus 發放率 %（佔入金）</label><input type="number" id="p_bonus" min="0" step="0.1"></div>
+        <label class="check"><input type="checkbox" id="p_dProc">COGS 扣金流手續費（合約有列）</label>
+        <label class="check"><input type="checkbox" id="p_dCb">COGS 扣刷退、拒付款（合約有列）</label>
+        <label class="check"><input type="checkbox" id="p_dBonus">也扣 Bonus（合約未列）</label>
+        <button type="button" class="reset" id="p_reset">還原預設值</button>
+      </div>
+    </details>
+  </div>
+
+  <div class="card verdict" aria-live="polite">
+    <div><div class="who">我每月實拿</div><div class="big num gain" id="p_v1"></div><div class="sub num" id="p_v1s"></div></div>
+    <div><div class="who">營運商先分走</div><div class="big num" id="p_v2"></div><div class="sub num" id="p_v2s"></div></div>
+    <div><div class="who">每 $100 玩家淨輸我拿</div><div class="big num" id="p_v3"></div><div class="sub" id="p_v3s"></div></div>
+  </div>
+
+  <div class="tw" style="margin-top:18px"><table class="gpw">
+    <thead><tr><th class="hps">項目</th><th class="hps r">金額 (USD)</th><th class="hps r">佔 Handle</th></tr></thead>
+    <tbody id="p_tb"></tbody>
+  </table></div>
+  <p class="calcnote">Adjusted Gross Profit 若算出負數以 0 計。Potent 的會計期間是 4／5 週，不是日曆月，對帳時要先對齊期間。</p>
+
+  <h2 class="gph">營運商分走越多，我拿越少</h2>
+  <div class="tw"><table class="gpout">
+    <thead><tr><th class="hps">營運商分走</th><th class="hps r">payments to Clients</th><th class="hps r">Adjusted Gross Profit</th><th class="hps r">我實拿</th><th class="hps r">和目前比</th></tr></thead>
+    <tbody id="p_sens"></tbody>
+  </table></div>
+
+  <ul class="gpnote">
+    <li><b>合約</b>：Potent Games Supply Agreement 草案（未簽）第 1(v) 條，Revenue Share ＝ 15% of Adjusted Gross Profit。</li>
+    <li><b>Adjusted Gross Profit</b> ＝ Handle 產生的毛收入 − COGS − payments to Clients − Customer 支付的第三方成本與費用。</li>
+    <li><b>COGS</b>（第 1(f) 條）＝ Host Track Fees、Source Market Fees、Tote Fees、北達科他博彩稅（含慈善捐付）、存提款處理成本、拒付款。各項費率沿用 Potent Platform Terms。</li>
+    <li><b>payments to Clients</b> 依 Platform Terms 推算：營運商分走平台 Gross Profit（抽水 − Platform Terms COGS 9.86%，含 Game Provider Fees 0.6%）的 60–80%。合約只寫「先扣」，沒寫怎麼算，以 Potent 的 Revenue Statement 為準。</li>
+    <li><b>跨廠商比較</b>：看最下面「每 $100 玩家淨輸我拿」，不要看佔 Handle——PS 只有一半押注進彩池，Handle 比 AW 小一半，佔 Handle 會虛高。</li>
+    <li><b>和 AW 最大的不同</b>：AW 是直接乘 Allocated GGR；PS 是營運商分完才輪到我們，營運商做得越大、級距越高，我們分到的反而越少。</li>
+  </ul>
+</article>
+
+<!-- 6 -->
 <article class="page" id="p-method" data-title="計算說明與來源" hidden>
   <p class="meta">TaDa Gaming｜美國市場拓展｜Potent Systems（PS） vs AmWest（AW）</p>
   <h1>計算說明與來源</h1>
-  <p class="lede">兩案都從 Handle 算起，差在分潤前扣多少、從哪裡分潤。</p>
+  <p class="lede">所有試算都從 Handle 算起，差在分潤前扣多少、從哪裡分潤。3 是 TaDa 自己當白牌營運商；4、5 是 TaDa 當遊戲商。</p>
   <div class="card explain">
-    <h3>PS（Potent Systems）</h3>
+    <h3>白牌營運商試算：PS（Potent Systems）</h3>
     <ol>
-      <li>Handle ＝ 入金 × Handle 倍數；GGR ＝ Handle × Takeout 20.08%</li>
+      <li>Handle ＝ 入金 × Handle 倍數；TakeOut（抽水）＝ Handle × 20.08%</li>
       <li>COGS ＝ Handle × 9.86%（賽道費 7%、遊戲商 0.6%、Source Market Fee 1.49%、Tote 0.4%、Interface Tote 0.07%、ND 稅 0.25%、慈善 0.05%）</li>
-      <li>Gross Profit ＝ GGR − COGS</li>
+      <li>Gross Profit ＝ TakeOut − COGS</li>
       <li>TaDa 分成依每月 Gross Profit 所在級距，整筆適用該級比例：$100 萬以下 60%、$100–500 萬 70%、$500–1,000 萬 75%、超過 $1,000 萬 80%</li>
-      <li>淨利 ＝ TaDa 分成 − 廣告、獎金、活動費、刷退、詐欺款、金流手續費、年費 $4 萬 ÷ 12、設定費 $10 萬 ÷ 12</li>
+      <li>淨利 ＝ TaDa 分成 − 廣告、獎金、活動費、刷退、詐欺款、金流手續費、年費 $4 萬 ÷ 12、設定費 $10 萬 ÷ 12（僅第 1 年）</li>
     </ol>
-    <h3>AW（AmWest，B Pool）</h3>
+    <h3>白牌營運商試算：AW（AmWest，B Pool）</h3>
     <ol>
-      <li>Handle ＝ 入金 × Handle 倍數；GGR ＝ Handle × Takeout 7.75%</li>
+      <li>Handle ＝ 入金 × Handle 倍數；TakeOut（抽水）＝ Handle × 7.75%</li>
       <li>COS ＝ Handle × 1.66%（pool guarantees、賽道內容相關費用、監管費與稅、host fees、資料費、tote 等）</li>
-      <li>NGR ＝ GGR − COS − 獎金、活動費 − 金流手續費 − 刷退、詐欺款 − KYC − Geolocation</li>
+      <li>Allocated GGR ＝ TakeOut − COS（＝ 遊戲商合約定義的 GGR，假設玩家只玩我方遊戲）</li>
+      <li>NGR ＝ Allocated GGR − 獎金、活動費 − 金流手續費 − 刷退、詐欺款 − KYC − Geolocation</li>
       <li>AW 分成 ＝ MAX（NGR × 12%，Handle × 0.5%）</li>
       <li>設定費（月攤）＝ 第 1 年 $35 萬 ÷ 12；年費（月攤）＝ 第 2–5 年 $75 萬 ÷ 12；兩者都可用 AW 分成抵扣，To AmWest ＝ MAX（AW 分成 − 已列年費／設定費，0）</li>
-      <li>遊戲商 ＝（GGR − COS）× 遊戲商費率；TaDa 分成 ＝ NGR − To AmWest − 遊戲商</li>
+      <li>遊戲商 ＝ Allocated GGR × 7%（假設）；TaDa 分成 ＝ NGR − To AmWest − 遊戲商</li>
       <li>淨利 ＝ TaDa 分成 − 廣告 − 年費／設定費（月攤）− 自建人力與系統</li>
     </ol>
+    <h3>AW 遊戲分潤（TaDa 當遊戲商）</h3>
+    <ol>
+      <li>GGR（合約定義）＝ Handle ×（抽水 7.75% − 賽馬成本 1.66%）</li>
+      <li>Allocated GGR ＝ GGR × 歸屬到我方遊戲 %</li>
+      <li>分潤基底 ＝ Allocated GGR；營運商要求時再扣 Bonus（Allocated GGR × 固定 %），合約有寫才扣金流、刷退、KYC</li>
+      <li>我實拿 ＝ 分潤基底 × 7%（假設，以各營運商附約為準）</li>
+    </ol>
+    <h3>PS 遊戲分潤（TaDa 當遊戲商）</h3>
+    <ol>
+      <li>Handle ＝ 入金 × Handle 倍數；毛收入 ＝ Handle × 抽水 20.08%</li>
+      <li>COGS ＝ Host Track 7%、Source Market 1.49%、Tote 0.4%、Interface Tote 0.07%、ND 稅 0.25%、慈善 0.05%（佔 Handle）＋ 金流、刷退（佔入金）</li>
+      <li>payments to Clients ＝（毛收入 − Platform Terms COGS 9.86%）× 營運商級距 60–80%</li>
+      <li>Adjusted Gross Profit ＝ 毛收入 − COGS − payments to Clients − 第三方成本</li>
+      <li>我實拿 ＝ Adjusted Gross Profit × 15%</li>
+    </ol>
+    <h3>跨廠商比較的占比（遊戲分潤頁最下面幾行）</h3>
+    <ol>
+      <li>玩家押注（token）：AW ＝ Handle（押注整筆進彩池）；PS ＝ Handle × 2（只有一半進彩池，另一半退回給玩家）</li>
+      <li>玩家淨輸 ＝ 玩家押注 − 派彩；兩家都等於抽水金額</li>
+      <li>每 $100 玩家淨輸我拿 ＝ 我實拿 ÷ 玩家淨輸 × 100，跨廠商比較看這個</li>
+      <li>佔 Handle 只適合同一家內部比較，因為各家 Handle 的定義不同</li>
+    </ol>
     <h3>資料來源</h3>
-    <p>PS：Potent Platform Terms（2026/01/01）、Platform Functionality。AW：AmWest B-Pool Economics（AmWager Average）；設定費、合約年限與月費依 AW 來源資料。Handle 倍數、獎金、活動費、刷退、詐欺款、金流手續費、KYC / Geo 為 TaDa 內部假設。</p>
+    <p>PS：Potent Platform Terms（2026/01/01）、Platform Functionality。AW：AmWest B-Pool Economics（AmWager Average）；設定費、合約年限與月費依 AW 來源資料。AW 遊戲分潤：AmWest Master Game Distribution Agreement（2026/11/03 版）。PS 遊戲分潤：Potent Games Supply Agreement 草案。Handle 倍數、獎金、活動費、刷退、詐欺款、金流手續費、KYC / Geo 為 TaDa 內部假設。</p>
   </div>
   <footer>TaDa Gaming｜美國市場拓展｜內部資料</footer>
 </article>
+
 </main>
 </div>
 
@@ -310,7 +469,7 @@ function calc(p){
   else{for(const [cap,r] of tiers){const seg=Math.max(Math.min(pgp,cap)-prev,0); pt+=seg*r; prev=cap;}}
   if(pgp<0) pt=pgp*0.6;
   const pp=pgp-pt;
-  const psOwn=[['廣告費',p.ad],['年費（月攤）',p.psWaive?0:40000/12],['設定費（月攤）',(p.psSingle?50000:100000)/12],['獎金、活動費',D*p.promo],['刷退、詐欺款',D*p.cb]];
+  const psOwn=[['廣告費',p.ad],['年費（月攤）',p.psWaive?0:40000/12],['設定費（月攤）',p.awYear2?0:(p.psSingle?50000:100000)/12],['獎金、活動費',D*p.promo],['刷退、詐欺款',D*p.cb]];
   if(p.psProc) psOwn.push(['金流手續費',D*p.proc]);
   if(p.psKyc) psOwn.push(['KYC + Geolocation',p.kyc+p.geo]);
   const psOwnT=psOwn.reduce((a,b)=>a+b[1],0), pn=pt-psOwnT;
@@ -333,10 +492,11 @@ function calc(p){
 }
 
 
-const DEF={deposit:6000000,ad:800000,psChurn:4.024,awChurn:8,promo:4,cb:1.5,proc:2.4696,kyc:22000,geo:22000,gpRate:7,staff:0,psKyc:false,psWaive:false,psSingle:false,awYear2:false,psCliff:true,psProc:true};
+const DEF={deposit:6000000,ad:800000,psChurn:3.70,awChurn:8,promo:4,cb:1.5,proc:2.4696,kyc:22000,geo:22000,gpRate:7,staff:0,psKyc:false,psWaive:false,psSingle:false,awYear2:false,psCliff:true,psProc:true};
 const KEY='wl-calc-v4';
 let S=Object.assign({},DEF);
 try{const s=localStorage.getItem(KEY); if(s) S=Object.assign({},DEF,JSON.parse(s));}catch(e){}
+if(+S.psChurn===4.024) S.psChurn=DEF.psChurn; // 舊預設 4.024 抽水與 RTP 不一致，改用 3.70
 const $=id=>document.getElementById(id);
 const numIds=['deposit','ad','psChurn','awChurn','promo','cb','proc','kyc','geo','gpRate','staff'];
 const chkIds=['psKyc','psWaive','psSingle','psCliff','psProc'];
@@ -358,14 +518,15 @@ function render(){syncInputs();const p=P(),r=calc(p),D=p.deposit||1;
   const m100=v=>(v<0?'−$':'$')+Math.abs(v).toFixed(1);
   $('psSub').textContent=`每 $100 入金淨賺 ${m100(p100)}`;
   $('awSub').textContent=`每 $100 入金淨賺 ${m100(a100)}`+(p.staff?'':'（未含自建成本）');
-  $('diffSub').textContent=d>0?'AW 自建人力與系統月成本低於此數，AW 才划算':'目前條件下 PS 較划算';
+  const thr=p.staff+d; // 未扣自建成本時 AW 比 PS 多賺的錢 = 自建成本的上限
+  $('diffSub').textContent=thr>0?`AW 自建人力與系統月成本要低於 ${wan(thr)}，才比 PS 划算`+(p.staff?`（目前填 ${wan(p.staff)}）`:''):'就算不計自建成本，PS 也較划算';
   const ps=r.ps,aw=r.aw;
   const blank=['',null,null,'b'];
   const pad=(g,n)=>g.concat(Array(Math.max(n-g.length,0)).fill(blank));
   const psG=[
     [['入金 Cash In',D,null]],
     [[`Total Handle（入金 × ${p.psChurn}）`,ps.h,null,'k']],
-    [['TakeOut（GGR）',ps.ggr,ps.h?ps.ggr/ps.h:0,'k']],
+    [['TakeOut（抽水）',ps.ggr,ps.h?ps.ggr/ps.h:0,'k']],
     ps.cLines.map(l=>['－ '+l.n,l.v,l.r]),
     [['Gross Profit（可分潤）',ps.gp,ps.h?ps.gp/ps.h:0,'k']],
     [['→ To Potent',ps.partner,ps.h?ps.partner/ps.h:0]],
@@ -375,10 +536,10 @@ function render(){syncInputs();const p=P(),r=calc(p),D=p.deposit||1;
   const awG=[
     [['入金 Cash In',D,null]],
     [[`Total Handle（入金 × ${p.awChurn}）`,aw.h,null,'k']],
-    [['TakeOut（GGR）',aw.ggr,aw.h?aw.ggr/aw.h:0,'k']],
-    [...aw.cLines.map(l=>['－ '+l.n,l.v,l.r]),...aw.pre.map(([n,v])=>['－ '+n,v,null])],
+    [['TakeOut（抽水）',aw.ggr,aw.h?aw.ggr/aw.h:0,'k']],
+    [...aw.cLines.map(l=>['－ '+l.n,l.v,l.r]),['Allocated GGR（遊戲商分潤基底）',aw.ggr-aw.c,aw.h?(aw.ggr-aw.c)/aw.h:0,'k'],...aw.pre.map(([n,v])=>['－ '+n,v,null])],
     [['NGR（可分潤）',aw.ngr,aw.h?aw.ngr/aw.h:0,'k']],
-    [['→ To AmWest（分潤扣除已付）',aw.pay,aw.h?aw.pay/aw.h:0],[`→ Game Provider（${(p.gpRate*100).toFixed(1)}%）`,aw.gpf,aw.h?aw.gpf/aw.h:0]],
+    [['→ To AmWest（分潤扣除已付）',aw.pay,aw.h?aw.pay/aw.h:0],[`→ Game Provider（Allocated GGR × ${(p.gpRate*100).toFixed(1)}%）`,aw.gpf,aw.h?aw.gpf/aw.h:0]],
     [['→ To TaDa',aw.tada,aw.h?aw.tada/aw.h:0,'t']],
     aw.own.map(([n,v,h])=>['－ '+n,v,h||null]),
     [['淨利',aw.net,{m:aw.net/D},'n']]];
@@ -388,12 +549,12 @@ function render(){syncInputs();const p=P(),r=calc(p),D=p.deposit||1;
   // summary
   const be1=breakeven('ps',p),be2=breakeven('aw',p);
   const fb=b=>b===null?'超出試算範圍':b===0?'已獲利':'約 USD $'+Math.ceil(b/1e4).toLocaleString('en-US')+' 萬';
-  $('s1h').textContent=(r.ps.net>0&&r.aw.net>0)?`分潤效率：AW 約為 PS 的 ${(a100/p100).toFixed(1)} 倍`:'分潤效率：AW 每 $100 入金淨賺較多';
+  $('s1h').textContent=(r.ps.net>0&&r.aw.net>0)?`當白牌營運商：AW 獲利效率約為 PS 的 ${(a100/p100).toFixed(1)} 倍`:'當白牌營運商：AW 每 $100 入金淨賺較多';
   $('s1a').textContent=`假設月入金：USD ${wan0(D)}`;
   $('s1b').textContent=`每 USD $100 入金：AW 淨賺 ${m100(a100)}，PS ${m100(p100)}`;
   $('s2a').textContent=`假設月廣告成本：USD ${wan0(p.ad)}`;
   $('s2b').textContent=`損益兩平點：AW 月入金${fb(be2)}（PS ${fb(be1).replace('約 USD ','約 ')}）`;
-  $('s3a').textContent=d>0?`月入金 USD ${wan0(D)}時，AW 自建人力與系統月成本須低於 USD ${wan(d)}，才比 PS 划算`:`月入金 USD ${wan0(D)}時，PS 較划算`;
+  $('s3a').textContent=thr>0?`月入金 USD ${wan0(D)}時，AW 自建人力與系統月成本須低於 USD ${wan(thr)}，才比 PS 划算`:`月入金 USD ${wan0(D)}時，就算不計自建成本，PS 也較划算`;
   save();}
 numIds.forEach(k=>$(k).addEventListener('input',e=>{S[k]=e.target.value===''?0:+e.target.value;render();}));
 $('depositR').addEventListener('input',e=>{S.deposit=+e.target.value;render();});
@@ -401,8 +562,152 @@ chkIds.forEach(k=>$(k).addEventListener('change',e=>{S[k]=e.target.checked;rende
 document.querySelectorAll('#presets button').forEach(b=>b.addEventListener('click',()=>{S.deposit=+b.dataset.v;render();}));
 $('y1').addEventListener('click',()=>{S.awYear2=false;render();});$('y2').addEventListener('click',()=>{S.awYear2=true;render();});
 $('reset').addEventListener('click',()=>{S=Object.assign({},DEF);render();});
+// game provider
+const GDEF={dep:1000000,mult:8,share:7,alloc:100,bfix:5,bb:'ggr',take:7.75,cos:1.66,proc:2.4696,cb:1.5,kyc:0,dProc:false,dCb:false,dKyc:false};
+const GKEY='wl-gp-v2';
+let GS=Object.assign({},GDEF);
+try{const s=localStorage.getItem(GKEY);if(s)GS=Object.assign({},GDEF,JSON.parse(s));}catch(e){}
+const gNum=['dep','mult','share','alloc','bfix','take','cos','proc','cb','kyc'];
+const gChk=['dProc','dCb','dKyc'];
+const BBLAB={ggr:'Allocated GGR',dep:'入金',handle:'Handle'};
+const money=v=>(v<0?'−$':'$')+Math.round(Math.abs(v)).toLocaleString('en-US');
+const fx=(v,d)=>(+v).toLocaleString('en-US',{maximumFractionDigits:d==null?2:d});
+function gQ(){const n=k=>+GS[k]||0;return {dep:n('dep'),mult:n('mult'),share:n('share')/100,alloc:Math.min(n('alloc'),100)/100,bfix:n('bfix')/100,bb:'ggr',take:n('take')/100,cos:n('cos')/100,proc:n('proc')/100,cb:n('cb')/100,kyc:n('kyc'),dProc:!!GS.dProc,dCb:!!GS.dCb,dKyc:!!GS.dKyc};}
+function gCalc(q,mode,fix){
+  const h=q.dep*q.mult,take=h*q.take,cos=h*q.cos,ggr=take-cos,other=ggr*(1-q.alloc),alloc=ggr-other;
+  const bbase={ggr:alloc,dep:q.dep,handle:h}[q.bb];
+  const bonus=mode==='fix'?bbase*(fix==null?q.bfix:fix):0;
+  const proc=q.dProc?q.dep*q.proc:0,cb=q.dCb?q.dep*q.cb:0,kyc=q.dKyc?q.kyc:0;
+  const raw=alloc-bonus-proc-cb-kyc,base=Math.max(raw,0),get=base*q.share;
+  return {h,take,cos,ggr,other,alloc,bonus,proc,cb,kyc,raw,base,get};
+}
+function gSync(){gNum.forEach(k=>{const el=$('g_'+k);if(document.activeElement!==el)el.value=GS[k];});
+  gChk.forEach(k=>$('g_'+k).checked=!!GS[k]);}
+function gRender(){gSync();const q=gQ(),A=gCalc(q,'none'),B=gCalc(q,'fix');
+  const pctG=v=>A.alloc>0?fx(v/A.alloc*100,1)+'%':'—';
+  const fixTxt=`${fx(q.bfix*100,1)}% × ${BBLAB[q.bb]}`;
+  $('g_hB').innerHTML=`B 營運商要求<br>（固定 ${fixTxt}）`;
+  // verdict
+  const loss=B.get-A.get;
+  $('g_v1').textContent=money(loss);$('g_v1').className='big num '+(loss<0?'loss':'');
+  $('g_v1s').textContent=`每月從 ${money(A.get)} 降到 ${money(B.get)}`+(A.get>0?`（${loss<0?'−':''}${fx(Math.abs(loss)/A.get*100,1)}%）`:'');
+  $('g_v2').textContent=B.base>0?fx(A.get/B.base*100,2)+'%':'扣光了';
+  $('g_v2s').textContent=`現行 ${fx(q.share*100,1)}%`+(B.base>0&&q.share>0?`，要多開 ${fx(A.get/B.base*100-q.share*100,2)} 個百分點`:'');
+  $('g_v3w').textContent='固定 % 每多 1 個百分點，每月再少拿';
+  const one=gCalc(q,'fix',q.bfix+0.01);
+  $('g_v3').textContent=money(-Math.abs(one.get-B.get));$('g_v3').className='big num loss';
+  $('g_v3s').textContent=`等於現行收入的 ${A.get>0?fx(Math.abs(one.get-B.get)/A.get*100,1):'0'}%`;
+  // waterfall
+  const dl=(lab,on)=>on?lab:lab+'<span class="mut">（合約不扣）</span>';
+  const tok=A.h*q.alloc,nl=A.take*q.alloc; // AW 押注整筆進彩池：token＝Handle；玩家淨輸＝抽水
+  const rows=[
+    ['入金 Cash In',q.dep,q.dep],
+    [`Total Handle（入金 × ${fx(q.mult)}）`,A.h,B.h,'k'],
+    [`抽水 Takeout（Handle × ${fx(q.take*100)}%）`,A.take,B.take],
+    [`－ 賽馬成本（Handle × ${fx(q.cos*100)}%：host fees、source market fees、tote fees、法規費、稅）`,-A.cos,-B.cos],
+    ['GGR（合約定義）',A.ggr,B.ggr,'k'],
+    [`－ 花在非我方遊戲（GGR × ${fx(100-q.alloc*100)}%）`,-A.other,-B.other],
+    ['Allocated GGR（歸屬我方遊戲）',A.alloc,B.alloc,'k'],
+    [`－ Bonus（A 不扣／B 固定 ${fixTxt}）`,-A.bonus,-B.bonus],
+    [dl(`－ 金流手續費（入金 × ${fx(q.proc*100)}%）`,q.dProc),-A.proc,-B.proc],
+    [dl(`－ 刷退、詐欺款（入金 × ${fx(q.cb*100)}%）`,q.dCb),-A.cb,-B.cb],
+    [dl('－ KYC / Geolocation',q.dKyc),-A.kyc,-B.kyc],
+    ['分潤基底',A.base,B.base,'k'],
+    [`× 我的分潤 ${fx(q.share*100)}%`,null,null],
+    ['我實拿',A.get,B.get,'n'],
+    ['每 $100 入金我拿',q.dep?A.get/q.dep*100:0,q.dep?B.get/q.dep*100:0,'c'],
+    ['每 $100 玩家押注（token）我拿',tok?A.get/tok*100:0,tok?B.get/tok*100:0,'c'],
+    ['每 $100 玩家淨輸我拿 <span class="mut">← 跨廠商比較看這個</span>',nl?A.get/nl*100:0,nl?B.get/nl*100:0,'c'],
+    ['分潤基底佔玩家淨輸',nl?A.base/nl:0,nl?B.base/nl:0,'p']];
+  const cell=(v,c)=>v==null?'<td></td>':`<td class="r num">${c==='c'?'$'+v.toFixed(2):c==='p'?(v*100).toFixed(1)+'%':money(v)}</td>`;
+  const pc=(v,h,i,cls)=>(v==null||cls==='c'||cls==='p'||i<2||!h)?'<td></td>':`<td class="r num">${(v/h*100).toFixed(2)}%</td>`;
+  $('g_tb').innerHTML=rows.map(([lab,a,b,cls],i)=>{const d=a==null?null:b-a,m=cls==='c'||cls==='p';
+    return `<tr class="${m?'':cls||''}"><td class="${cls&&!m?'':'ind'}">${lab}</td>${cell(a,cls)}${pc(a,A.h,i,cls)}${cell(b,cls)}${pc(b,B.h,i,cls)}<td class="r num ${d<0?'loss':''}">${d==null||Math.abs(d)<(cls==='p'?1e-6:0.005)?'':(cls==='c'?(d<0?'−$':'$')+Math.abs(d).toFixed(2):cls==='p'?(d<0?'−':'+')+Math.abs(d*100).toFixed(1)+' 個百分點':money(d))}</td></tr>`;}).join('');
+  try{localStorage.setItem(GKEY,JSON.stringify(GS));}catch(e){}
+  try{gpSum();}catch(e){} // PS 遊戲分潤還沒載入時先略過
+}
+gNum.forEach(k=>$('g_'+k).addEventListener('input',e=>{GS[k]=e.target.value===''?0:+e.target.value;gRender();}));
+gChk.forEach(k=>$('g_'+k).addEventListener('change',e=>{GS[k]=e.target.checked;gRender();}));
+$('g_reset').addEventListener('click',()=>{GS=Object.assign({},GDEF);gRender();});
+gRender();
+// PS game provider
+const PG_DEF={dep:1000000,mult:3.70,share:15,tier:'auto',take:20.08,host:7,src:1.49,tote:0.4,itote:0.07,nd:0.25,char:0.05,gpf:0.6,proc:2.4696,cb:1.5,third:0,bonus:4,dProc:true,dCb:true,dBonus:false};
+const PG_KEY='wl-psgp-v1';
+let PGS=Object.assign({},PG_DEF);
+try{const s=localStorage.getItem(PG_KEY);if(s)PGS=Object.assign({},PG_DEF,JSON.parse(s));}catch(e){}
+const pgNum=['dep','mult','share','take','host','src','tote','itote','nd','char','gpf','proc','cb','third','bonus'];
+const pgChk=['dProc','dCb','dBonus'];
+const PG_POOL=0.5; // PS 每押 $1 只有 $0.5 進彩池
+const PG_TIERS=[[1e6,.6,'$100 萬以下'],[5e6,.7,'$100–500 萬'],[1e7,.75,'$500–1,000 萬'],[Infinity,.8,'超過 $1,000 萬']];
+function pgQ(){const n=k=>+PGS[k]||0,r=k=>n(k)/100;return {dep:n('dep'),mult:n('mult'),share:r('share'),tier:PGS.tier,take:r('take'),host:r('host'),src:r('src'),tote:r('tote'),itote:r('itote'),nd:r('nd'),char:r('char'),gpf:r('gpf'),proc:r('proc'),cb:r('cb'),third:n('third'),bonus:r('bonus'),dProc:!!PGS.dProc,dCb:!!PGS.dCb,dBonus:!!PGS.dBonus};}
+function pgCalc(q,tierOv){
+  const h=q.dep*q.mult,gross=h*q.take;
+  const L=[['Host Track Fees',q.host],['Source Market Fees',q.src],['Tote Fee',q.tote],['Interface Tote Fees',q.itote],['North Dakota Tax',q.nd],['Charity Payment',q.char]].map(([n,r])=>({n,r,v:h*r}));
+  const Lsum=L.reduce((a,b)=>a+b.v,0),gpfV=h*q.gpf;
+  const platGP=gross-Lsum-gpfV; // Platform Terms 的 Gross Profit：營運商分成的基礎
+  const band=PG_TIERS.find(([c])=>platGP<=c);
+  const tier=tierOv!=null?tierOv:(q.tier==='auto'?band[1]:(+q.tier||0)/100);
+  const client=Math.max(platGP,0)*tier;
+  const proc=q.dProc?q.dep*q.proc:0,cb=q.dCb?q.dep*q.cb:0,bonus=q.dBonus?q.dep*q.bonus:0,third=q.third;
+  const afterCogs=gross-Lsum-proc-cb;
+  const raw=afterCogs-client-third-bonus,base=Math.max(raw,0),get=base*q.share;
+  return {h,gross,L,gpfV,proc,cb,afterCogs,platGP,band,tier,client,third,bonus,base,get};
+}
+function pgSync(){pgNum.forEach(k=>{const el=$('p_'+k);if(document.activeElement!==el)el.value=PGS[k];});
+  pgChk.forEach(k=>$('p_'+k).checked=!!PGS[k]);
+  document.querySelectorAll('[data-pt]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.pt===String(PGS.tier)));}
+function pgRender(){pgSync();const q=pgQ(),r=pgCalc(q),H=r.h||1;
+  const pH=v=>(v/H*100).toFixed(2)+'%';
+  $('p_v1').textContent=money(r.get);
+  $('p_v1s').textContent=`每 $100 入金 $${q.dep?(r.get/q.dep*100).toFixed(2):'0.00'}`;
+  $('p_v2').textContent=fx(r.tier*100,1)+'%';
+  $('p_v2s').textContent=`平台月毛利 ${money(r.platGP)}`+(q.tier==='auto'?`，落在「${r.band[2]}」級距`:'（手動指定）');
+  $('p_v3').textContent=r.gross?'$'+(r.get/r.gross*100).toFixed(2):'—';
+  $('p_v3s').textContent=r.h?`跨廠商比較看這個；佔 Handle ${pH(r.get)}`:'';
+  const dl=(lab,on,off)=>on?lab:lab+`<span class="mut">（${off}）</span>`;
+  const rows=[
+    ['入金 Cash In',q.dep,null],
+    [`Handle（入金 × ${fx(q.mult)}）`,r.h,null,'k'],
+    [`抽水 Takeout（Handle × ${fx(q.take*100)}%）`,r.gross,r.gross/H,'k'],
+    ...r.L.map(l=>[`－ ${l.n}（Handle × ${fx(l.r*100)}%）`,-l.v,-l.r]),
+    [dl(`－ 金流手續費（入金 × ${fx(q.proc*100)}%）`,q.dProc,'不扣'),-r.proc,-r.proc/H],
+    [dl(`－ 刷退、拒付款（入金 × ${fx(q.cb*100)}%）`,q.dCb,'不扣'),-r.cb,-r.cb/H],
+    ['扣完 COGS',r.afterCogs,r.afterCogs/H,'k'],
+    [`－ payments to Clients（平台毛利 ${money(r.platGP)} × ${fx(r.tier*100,1)}%）`,-r.client,-r.client/H],
+    ['－ Customer 支付的第三方成本',-r.third,-r.third/H],
+    [dl(`－ Bonus（入金 × ${fx(q.bonus*100)}%）`,q.dBonus,'合約未列，不扣'),-r.bonus,-r.bonus/H],
+    ['Adjusted Gross Profit',r.base,r.base/H,'k'],
+    [`× 我的分潤 ${fx(q.share*100)}%`,null,null],
+    ['我實拿',r.get,r.get/H,'n']];
+  const tok=r.h/PG_POOL,loss=r.gross; // PS 只有一半押注進彩池：token＝Handle÷50%；退回的那半全數還給玩家，玩家淨輸＝抽水
+  const mrow=(lab,val)=>`<tr><td class="ind">${lab}</td><td class="r num">${val}</td><td></td></tr>`;
+  $('p_tb').innerHTML=rows.map(([lab,v,ph,cls])=>`<tr class="${cls||''}"><td class="${cls?'':'ind'}">${lab}</td><td class="r num">${v==null?'':money(v)}</td><td class="r num">${ph==null?'':(ph*100).toFixed(2)+'%'}</td></tr>`).join('')
+    +mrow('每 $100 入金我拿','$'+(q.dep?r.get/q.dep*100:0).toFixed(2))
+    +mrow('每 $100 玩家押注（token ＝ Handle × 2）我拿','$'+(tok?r.get/tok*100:0).toFixed(2))
+    +mrow('每 $100 玩家淨輸我拿 <span class="mut">← 跨廠商比較看這個</span>','$'+(loss?r.get/loss*100:0).toFixed(2))
+    +mrow('分潤基底佔玩家淨輸',(loss?r.base/loss*100:0).toFixed(1)+'%');
+  $('p_sens').innerHTML=PG_TIERS.map(([,t])=>{const s=pgCalc(q,t),d=s.get-r.get,cur=Math.abs(t-r.tier)<1e-9;
+    return `<tr class="${cur?'best':''}"><td>${t*100}%${cur?' <span class="mut">← 目前</span>':''}</td><td class="r num">${money(s.client)}</td><td class="r num">${money(s.base)}</td><td class="r num">${money(s.get)}</td><td class="r num ${d<0?'loss':d>0?'gain':''}">${Math.abs(d)<0.5?'—':(d>0?'+':'')+money(d)}</td></tr>`;}).join('');
+  try{localStorage.setItem(PG_KEY,JSON.stringify(PGS));}catch(e){}
+  gpSum();
+}
+// 結論摘要第 4 點：TaDa 當遊戲商，每 $100 玩家淨輸各拿多少
+function gpSum(){
+  const q=gQ(),A=gCalc(q,'none'),B=gCalc(q,'fix'),nl=A.take*q.alloc;
+  const pq=pgQ(),P=pgCalc(pq);
+  const aw=nl?A.get/nl*100:0,awB=nl?B.get/nl*100:0,ps=P.gross?P.get/P.gross*100:0;
+  $('s4h').textContent=aw>=ps?'當遊戲商：AW 比 PS 划算':'當遊戲商：PS 比 AW 划算';
+  $('s4a').textContent=`每 $100 玩家淨輸：AW 給我們 $${aw.toFixed(2)}，PS 給 $${ps.toFixed(2)}`+(aw>0&&ps>0?`（${aw>=ps?'AW 約為 PS 的 '+(aw/ps).toFixed(1):'PS 約為 AW 的 '+(ps/aw).toFixed(1)} 倍）`:'');
+  $('s4b').textContent=`差在分潤基底：AW 直接從 Allocated GGR 分 ${fx(q.share*100)}%；PS 是營運商先分走毛利的 ${fx(P.tier*100)}%，剩下的才分 ${fx(pq.share*100)}%`;
+  $('s4c').textContent=q.bfix>0?`AW 營運商若要求 Bonus 固定扣 ${fx(q.bfix*100,1)}%，AW 降為 $${awB.toFixed(2)}，`+(awB>=ps?'仍比 PS 多':'會低於 PS'):'AW 營運商若要求 Bonus 固定扣 %，收入會照比例減少';
+}
+pgNum.forEach(k=>$('p_'+k).addEventListener('input',e=>{PGS[k]=e.target.value===''?0:+e.target.value;pgRender();}));
+pgChk.forEach(k=>$('p_'+k).addEventListener('change',e=>{PGS[k]=e.target.checked;pgRender();}));
+document.querySelectorAll('[data-pt]').forEach(b=>b.addEventListener('click',()=>{PGS.tier=b.dataset.pt;pgRender();}));
+$('p_reset').addEventListener('click',()=>{PGS=Object.assign({},PG_DEF);pgRender();});
+pgRender();
 // sections
-const PAGES=['compare','summary','calc','method'];
+const PAGES=['compare','summary','calc','gp','psgp','method'];
 function show(id,push){if(!PAGES.includes(id))id='compare';
   PAGES.forEach(k=>{$('p-'+k).hidden=k!==id;});
   document.querySelectorAll('nav a').forEach(a=>{a.dataset.p===id?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current');});
