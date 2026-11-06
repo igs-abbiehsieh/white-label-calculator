@@ -412,7 +412,7 @@ tr.best td{background:var(--soft);font-weight:700}
   <div class="card explain">
     <h3>白牌營運商試算：PS（Potent Systems）</h3>
     <ol>
-      <li>Bet ＝ 入金 × Bet 倍數 8.73；Handle ＝ Bet × 進彩池比例 40%（其餘退回玩家）；TakeOut（抽水）＝ Handle × 20.08%</li>
+      <li>Bet ＝ 入金 × Bet 倍數 8（與 AW 相同）；Handle ＝ Bet × 進彩池比例 40%（其餘退回玩家）；TakeOut（抽水）＝ Handle × 20.08%</li>
       <li>COGS ＝ Handle × 9.86%（賽道費 7%、遊戲商 0.6%、Source Market Fee 1.49%、Tote 0.4%、Interface Tote 0.07%、ND 稅 0.25%、慈善 0.05%）</li>
       <li>Gross Profit ＝ TakeOut − COGS</li>
       <li>TaDa 分成依每月 Gross Profit 所在級距，整筆適用該級比例：$100 萬以下 60%、$100–500 萬 70%、$500–1,000 萬 75%、超過 $1,000 萬 80%</li>
@@ -496,11 +496,11 @@ function calc(p){
 }
 
 
-const DEF={deposit:6000000,ad:800000,psBet:8.73,psPool:40,awBet:8,awPool:100,promo:4,cb:1.5,proc:2.4696,kyc:22000,geo:22000,gpRate:7,staff:0,psKyc:false,psWaive:false,psSingle:false,awYear2:false,psCliff:true,psProc:true};
+const DEF={deposit:6000000,ad:800000,psBet:8,psPool:40,awBet:8,awPool:100,promo:4,cb:1.5,proc:2.4696,kyc:22000,geo:22000,gpRate:7,staff:0,psKyc:false,psWaive:false,psSingle:false,awYear2:false,psCliff:true,psProc:true};
 const KEY='wl-calc-v4';
 let S=Object.assign({},DEF);
 try{const s=localStorage.getItem(KEY); if(s) S=Object.assign({},DEF,JSON.parse(s));}catch(e){}
-if(+S.psBet===7.4&&+S.psPool===50){S.psBet=DEF.psBet;S.psPool=DEF.psPool;} // 舊預設 7.40×50% 改為 8.73×40%
+if((+S.psBet===7.4&&+S.psPool===50)||+S.psBet===8.73){S.psBet=DEF.psBet;S.psPool=DEF.psPool;} // 舊預設改為兩家同 Bet 8 倍
 const $=id=>document.getElementById(id);
 const numIds=['deposit','ad','psBet','psPool','awBet','awPool','promo','cb','proc','kyc','geo','gpRate','staff'];
 const chkIds=['psKyc','psWaive','psSingle','psCliff','psProc'];
@@ -636,11 +636,11 @@ gChk.forEach(k=>$('g_'+k).addEventListener('change',e=>{GS[k]=e.target.checked;g
 $('g_reset').addEventListener('click',()=>{GS=Object.assign({},GDEF);gRender();});
 gRender();
 // PS game provider
-const PG_DEF={dep:1000000,bet:8.73,pool:40,share:15,tier:'auto',take:20.08,host:7,src:1.49,tote:0.4,itote:0.07,nd:0.25,char:0.05,gpf:0.6,proc:2.4696,cb:1.5,third:0,bonus:4,dProc:true,dCb:true,dBonus:false};
+const PG_DEF={dep:1000000,bet:8,pool:40,share:15,tier:'auto',take:20.08,host:7,src:1.49,tote:0.4,itote:0.07,nd:0.25,char:0.05,gpf:0.6,proc:2.4696,cb:1.5,third:0,bonus:4,dProc:true,dCb:true,dBonus:false};
 const PG_KEY='wl-psgp-v1';
 let PGS=Object.assign({},PG_DEF);
 try{const s=localStorage.getItem(PG_KEY);if(s)PGS=Object.assign({},PG_DEF,JSON.parse(s));}catch(e){}
-if(+PGS.bet===7.4&&+PGS.pool===50){PGS.bet=PG_DEF.bet;PGS.pool=PG_DEF.pool;}
+if((+PGS.bet===7.4&&+PGS.pool===50)||+PGS.bet===8.73){PGS.bet=PG_DEF.bet;PGS.pool=PG_DEF.pool;}
 const pgNum=['dep','bet','pool','share','take','host','src','tote','itote','nd','char','gpf','proc','cb','third','bonus'];
 const pgChk=['dProc','dCb','dBonus'];
 const PG_TIERS=[[1e6,.6,'$100 萬以下'],[5e6,.7,'$100–500 萬'],[1e7,.75,'$500–1,000 萬'],[Infinity,.8,'超過 $1,000 萬']];
